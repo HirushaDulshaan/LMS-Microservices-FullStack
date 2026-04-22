@@ -1,0 +1,27 @@
+{
+  "name": "enrollment-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@prisma/client": "^7.7.0",
+    "@prisma/config": "^7.7.0",
+    "axios": "^1.15.1",
+    "dotenv": "^17.4.2",
+    "eureka-js-client": "^4.5.0",
+    "express": "^5.2.1",
+    "mongoose": "^9.5.0",
+    "stripe": "^22.0.2",
+    "tsx": "^4.21.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0"
+  }
+}

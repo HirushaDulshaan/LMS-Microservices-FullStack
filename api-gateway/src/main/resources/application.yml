@@ -1,0 +1,41 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      globalcors: # මේ කෑල්ල අනිවාර්යයෙන්ම ඕනේ
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:4200"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+      routes:
+        # ✅ Login & Register - NO filter (public endpoints)
+        - id: auth-service-public
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth/login, /auth/register
+          # filters නැහැ - public access
+
+        # ✅ Other auth endpoints - WITH filter
+        - id: auth-service-protected
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth/**
+          filters:
+            - AuthenticationFilter
+
+        - id: course-service
+          uri: lb://course-service
+          predicates:
+            - Path=/courses/**
+          filters:
+            - AuthenticationFilter
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
