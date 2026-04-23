@@ -15,15 +15,25 @@ public class LessonController {
     @Autowired
     private LessonService lessonService;
 
-    // Lesson එකක් ඇඩ් කරන්න
     @PostMapping("/add")
     public ResponseEntity<Lesson> addLesson(@PathVariable Long courseId, @RequestBody Lesson lesson) {
         return ResponseEntity.ok(lessonService.addLessonToCourse(courseId, lesson));
     }
 
-    // Course එකකට අදාළ ඔක්කොම Lessons බලන්න
     @GetMapping("/all")
     public ResponseEntity<List<Lesson>> getLessons(@PathVariable Long courseId) {
         return ResponseEntity.ok(lessonService.getLessonsByCourseId(courseId));
+    }
+
+    @GetMapping("/{lessonId}")
+    public ResponseEntity<Lesson> getLessonById(@PathVariable Long courseId, @PathVariable Long lessonId) {
+        return ResponseEntity.ok(lessonService.getLessonById(courseId, lessonId));
+    }
+
+    @PutMapping("/update/{lessonId}")
+    public ResponseEntity<Lesson> updateLesson(@PathVariable Long courseId,
+                                               @PathVariable Long lessonId,
+                                               @RequestBody Lesson lessonDetails) {
+        return ResponseEntity.ok(lessonService.updateLesson(courseId, lessonId, lessonDetails));
     }
 }

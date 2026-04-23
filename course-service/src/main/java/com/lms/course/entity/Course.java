@@ -29,9 +29,10 @@ public class Course {
     private String level;
     private Long teacherId;
 
-    @ManyToOne(fetch = FetchType.EAGER) // EAGER දැම්මම subject එකත් එක්කම දත්ත එනවා
+    private String instructorName; // 👈 මේ පේළිය අලුතින් ඇඩ් කරන්න. එතකොට setInstructorName වැඩ කරයි.
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "subject_id")
-    // 👇 මේක පාවිච්චි කරන්න. එතකොට subject එක පේනවා, හැබැයි infinite loop වෙන්නේ නැහැ.
     @JsonIgnoreProperties("courses")
     private Subject subject;
 

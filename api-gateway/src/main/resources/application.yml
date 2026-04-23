@@ -6,21 +6,21 @@ spring:
     name: api-gateway
   cloud:
     gateway:
-      globalcors: # මේ කෑල්ල අනිවාර්යයෙන්ම ඕනේ
+      globalcors:
+        add-to-simple-url-handler-mapping: true
         cors-configurations:
           '[/**]':
             allowedOrigins: "http://localhost:4200"
             allowedMethods: "*"
             allowedHeaders: "*"
       routes:
-        # ✅ Login & Register - NO filter (public endpoints)
+        # ✅ 1. Auth Public (Login/Register)
         - id: auth-service-public
           uri: lb://auth-service
           predicates:
             - Path=/auth/login, /auth/register
-          # filters නැහැ - public access
 
-        # ✅ Other auth endpoints - WITH filter
+        # ✅ 2. Auth Protected (Token Validation required)
         - id: auth-service-protected
           uri: lb://auth-service
           predicates:
@@ -28,10 +28,33 @@ spring:
           filters:
             - AuthenticationFilter
 
-        - id: course-service
+        # ✅ 3. User Profile (Protected)
+        - id: user-service-protected
+          uri: lb://auth-service
+          predicates:
+            - Path=/user/**
+          filters:
+            - AuthenticationFilter
+
+        # ✅ 4. Course Service - PUBLIC (No Login required)
+        - id: course-service-public
           uri: lb://course-service
           predicates:
-            - Path=/courses/**
+            - Path=/courses/all, /courses/subjects/all, /courses/{id}, /courses/{id}/lessons/**
+
+        # ✅ 5. Course Service - PROTECTED (Instructors/Admins only)
+        - id: course-service-protected
+          uri: lb://course-service
+          predicates:
+            - Path=/courses/create, /courses/update/**, /courses/instructor/my
+          filters:
+            - AuthenticationFilter
+
+        # ✅ 6. Enrollment Service - PROTECTED (Node.js Service)
+        - id: enrollment-service
+          uri: lb://enrollment-service
+          predicates:
+            - Path=/api/enroll/**
           filters:
             - AuthenticationFilter
 
@@ -39,3 +62,5 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
+  instance:
+    prefer-ip-address: true

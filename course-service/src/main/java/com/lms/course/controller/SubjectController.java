@@ -15,15 +15,21 @@ public class SubjectController {
     @Autowired
     private SubjectService subjectService;
 
-    // Frontend dropdown එකට අවශ්‍ය subjects ටික ගන්න
+    // 1. සියලුම Subjects ලබා ගැනීම (Frontend dropdown එකට)
     @GetMapping("/all")
     public ResponseEntity<List<Subject>> getAllSubjects() {
         return ResponseEntity.ok(subjectService.getAllSubjects());
     }
 
-    // අලුත් Subject එකක් ඇඩ් කරන්න
+    // 2. අලුත් Subject එකක් ඇඩ් කිරීම
     @PostMapping("/add")
     public ResponseEntity<Subject> addSubject(@RequestBody Subject subject) {
         return ResponseEntity.ok(subjectService.saveSubject(subject));
+    }
+
+    // 3. පවතින Subject එකක් Update කිරීම
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Subject> updateSubject(@PathVariable Long id, @RequestBody Subject subjectDetails) {
+        return ResponseEntity.ok(subjectService.updateSubject(id, subjectDetails));
     }
 }

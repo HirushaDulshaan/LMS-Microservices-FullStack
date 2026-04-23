@@ -33,5 +33,9 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role = Role.STUDENT; // Default value eka Student karaa
+    private Role role = Role.STUDENT;
+
+    // 👇 අලුතින් ඇඩ් කරපු කෑල්ල
+    @Embedded
+    private Address address;
 }

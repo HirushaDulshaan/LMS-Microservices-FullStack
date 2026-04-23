@@ -6,6 +6,7 @@ import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -30,6 +31,9 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     @Override
     public GatewayFilter apply(Config config) {
         return ((exchange, chain) -> {
+            if (org.springframework.http.HttpMethod.OPTIONS.equals(exchange.getRequest().getMethod())) {
+                return chain.filter(exchange);
+            }
             if (validator.isSecured.test(exchange.getRequest())) {
                 if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
                     throw new RuntimeException("Missing Authorization Header");
@@ -41,12 +45,19 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 }
 
                 // WebClient use karala non-blocking call ekak yawamu
+                // AuthenticationFilter.java (Gateway project)
                 return webClientBuilder.build()
                         .get()
                         .uri("http://AUTH-SERVICE/auth/validate?token=" + authHeader)
                         .retrieve()
-                        .bodyToMono(String.class) // Response eka String ekak widiyata gannawa
-                        .flatMap(response -> chain.filter(exchange)); // Validate unama request eka pass karanawa
+                        .bodyToMono(String.class)
+                        .flatMap(response -> chain.filter(exchange))
+                        .onErrorResume(error -> {
+                            // 💡 AuthService එකෙන් error එකක් ආවොත් ඒක catch කරලා 401ක් දෙමු
+                            System.out.println("Validation failed: " + error.getMessage());
+                            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+                            return exchange.getResponse().setComplete();
+                        });
             }
             return chain.filter(exchange);
         });

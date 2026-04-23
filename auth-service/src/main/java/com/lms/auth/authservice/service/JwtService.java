@@ -38,9 +38,12 @@ public class JwtService {
 
     // JwtService.java ඇතුළත මේ විදිහට වෙනස් කරන්න
 
-    public String generateToken(String userName, String role) { // <--- role එක parameter එකක් විදිහට ගමු
+    // 1. Method Signature එක වෙනස් කරමු userId එකත් ගන්න පුළුවන් වෙන්න
+    // JwtService.java ඇතුළත
+    public String generateToken(String userName, String role, Long userId) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("role", role); // <--- මෙන්න මේක තමයි මැජික් පේළිය!
+        claims.put("role", role);   // ✅ push නොව put විය යුතුයි
+        claims.put("userId", userId); // ✅ push නොව put විය යුතුයි
         return createToken(claims, userName);
     }
 
