@@ -13,4 +13,6 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
     // Subject ID eken courses filter karanna
     List<Course> findBySubjectId(Long subjectId);
+    // දීපු IDs ලිස්ට් එකේ තියෙන කෝර්ස් ටික විතරක් ගන්නවා
+    List<Course> findAllByIdIn(List<Long> ids);
 }

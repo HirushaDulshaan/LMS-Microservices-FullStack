@@ -36,4 +36,5 @@ public class LessonController {
                                                @RequestBody Lesson lessonDetails) {
         return ResponseEntity.ok(lessonService.updateLesson(courseId, lessonId, lessonDetails));
     }
+
 }

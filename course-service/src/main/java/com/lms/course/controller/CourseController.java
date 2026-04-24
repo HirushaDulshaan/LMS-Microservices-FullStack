@@ -46,4 +46,8 @@ public class CourseController {
                                                @RequestHeader("Authorization") String token) {
         return ResponseEntity.ok(courseService.updateCourse(id, courseDetails, token));
     }
+    @PostMapping("/by-ids")
+    public ResponseEntity<List<Course>> getCoursesByIds(@RequestBody List<Long> ids) {
+        return ResponseEntity.ok(courseService.getCoursesByIds(ids));
+    }
 }

@@ -46,7 +46,7 @@ spring:
         - id: course-service-protected
           uri: lb://course-service
           predicates:
-            - Path=/courses/create, /courses/update/**, /courses/instructor/my
+            - Path=/courses/create, /courses/update/**, /courses/instructor/my,/courses/*/lessons/*/complete
           filters:
             - AuthenticationFilter
 

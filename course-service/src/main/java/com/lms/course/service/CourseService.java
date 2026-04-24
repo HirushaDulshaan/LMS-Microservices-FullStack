@@ -104,4 +104,12 @@ public class CourseService {
         // 5. සේව් කරමු
         return courseRepository.save(existingCourse);
     }
+    // CourseService.java ඇතුළත
+
+    public List<Course> getCoursesByIds(List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return List.of(); // හිස් ලිස්ට් එකක් එවලා තිබ්බොත් හිස්වම ආපහු යවනවා
+        }
+        return courseRepository.findAllByIdIn(ids);
+    }
 }

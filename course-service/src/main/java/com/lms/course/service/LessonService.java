@@ -1,8 +1,12 @@
 package com.lms.course.service;
 
 import com.lms.course.entity.Course;
+import com.lms.course.entity.CourseEnrollment;
 import com.lms.course.entity.Lesson;
+import com.lms.course.entity.LessonProgress;
+import com.lms.course.repository.CourseEnrollmentRepository;
 import com.lms.course.repository.CourseRepository;
+import com.lms.course.repository.LessonProgressRepository;
 import com.lms.course.repository.LessonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +21,12 @@ public class LessonService {
 
     @Autowired
     private CourseRepository courseRepository;
+
+    @Autowired
+    private LessonProgressRepository lessonProgressRepository;
+
+    @Autowired
+    private CourseEnrollmentRepository enrollmentRepository;
 
     public Lesson addLessonToCourse(Long courseId, Lesson lesson) {
         Course course = courseRepository.findById(courseId)
@@ -53,4 +63,5 @@ public class LessonService {
         // 3. සේව් කරමු
         return lessonRepository.save(existingLesson);
     }
+
 }

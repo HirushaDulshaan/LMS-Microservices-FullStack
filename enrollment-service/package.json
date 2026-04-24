@@ -14,7 +14,7 @@
     "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^7.7.0",
     "@prisma/config": "^7.7.0",
-    "axios": "^1.15.1",
+    "axios": "^1.15.2",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "eureka-js-client": "^4.5.0",
