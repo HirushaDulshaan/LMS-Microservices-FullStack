@@ -14,17 +14,14 @@ public class AuthConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // CSRF අක්‍රිය කරනවා
+                .csrf(csrf -> csrf.disable()) /// ccrf disabled
                 .authorizeHttpRequests(auth -> auth
-                        // 1. /auth යටතේ ඇති login, register, validate සියල්ලටම අවසර දෙනවා
+
                         .requestMatchers("/auth/**").permitAll()
 
-                        // 2. /user යටතේ ඇති profile, update සියල්ලටම අවසර දෙනවා
                         .requestMatchers("/user/**").permitAll()
 
-                        // 3. වෙනත් ඕනෑම request එකක් authenticated විය යුතුයි (නමුත් අපේ logic එකේ මේවා අඩුයි)
                         .anyRequest().permitAll()                )
-                // 💡 වැදගත්: Session creation policy එක STATELESS කරනවා
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 );

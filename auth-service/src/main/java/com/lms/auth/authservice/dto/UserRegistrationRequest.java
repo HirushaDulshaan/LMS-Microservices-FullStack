@@ -14,5 +14,5 @@ public class UserRegistrationRequest {
     private String email;
     private String mobileNumber;
     private String password;
-    private Role role; // Student da Teacher da kiyala ewanna puluwan
+    private Role role;
 }

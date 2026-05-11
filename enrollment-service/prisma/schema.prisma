@@ -13,7 +13,6 @@ model Enrollment {
   amount          Float
   status          String   @default("PENDING")
   transactionId   String
-  // ✅ මේ දෙක අලුතෙන් ඇඩ් කරමු
   progressPercent Float    @default(0)
   isCompleted     Boolean  @default(false)
   createdAt       DateTime @default(now())
@@ -27,5 +26,5 @@ model LessonProgress {
   completed Boolean  @default(true)
   createdAt DateTime @default(now())
 
-  @@unique([userId, lessonId]) // එකම යූසර්ට එකම පාඩම දෙපාරක් සේව් වෙන්න බැහැ
+  @@unique([userId, lessonId])
 }

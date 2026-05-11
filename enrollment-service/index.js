@@ -17,7 +17,7 @@ const prisma = new PrismaClient({adapter});
 const stripe = new stripePackage(process.env.STRIPE_SECRET_KEY);
 const app = express();
 
-// ✅ 1. Stripe Webhook (MUST be before express.json)
+
 app.post('/api/enroll/webhook', express.raw({type: 'application/json'}), async (req, res) => {
     const sig = req.headers['stripe-signature'];
     let event;
@@ -29,10 +29,10 @@ app.post('/api/enroll/webhook', express.raw({type: 'application/json'}), async (
     if (event.type === 'checkout.session.completed') {
         const session = event.data.object;
         try {
-            // ✅ එකම transactionId එක තියෙන ඔක්කොම SUCCESS කරන්න
+
             await prisma.enrollment.updateMany({
-                where: { transactionId: session.id },
-                data: { status: 'SUCCESS' }
+                where: {transactionId: session.id},
+                data: {status: 'SUCCESS'}
             });
         } catch (dbError) {
             console.error('❌ Webhook DB Error:', dbError);
@@ -42,9 +42,8 @@ app.post('/api/enroll/webhook', express.raw({type: 'application/json'}), async (
 });
 
 app.use(express.json());
-// app.use(cors()); // 💡 Gateway එකේ CORS තියෙන නිසා මෙතන ඕනේ නැහැ
 
-// ✅ 2. Eureka Config
+//  Eureka Config
 const eurekaClient = new Eureka({
     instance: {
         app: 'enrollment-service',
@@ -61,26 +60,21 @@ eurekaClient.start((error) => {
     if (!error) console.log('✅ Registered with Eureka');
 });
 
-// --- ROUTES ---
-
-// 1. Create Checkout
-// enrollment-service ඇතුළත checkout API එක
 
 app.post('/api/enroll/checkout', async (req, res) => {
-    const { items, studentId } = req.body; // Array එකක් එනවා
+    const {items, studentId} = req.body;
 
     try {
-        // 1. Stripe එකට items ටික map කරමු
         const lineItems = items.map(item => ({
             price_data: {
                 currency: 'lkr',
-                product_data: { name: item.title },
+                product_data: {name: item.title},
                 unit_amount: Math.round(item.price * 100),
             },
             quantity: 1,
         }));
 
-        // 2. Stripe Session එක හදමු
+        // Stripe Session
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: lineItems,
@@ -89,7 +83,7 @@ app.post('/api/enroll/checkout', async (req, res) => {
             cancel_url: `http://localhost:4200/cart`,
         });
 
-        // 3. 💡 වැදගත්ම දේ: හැම item එකකටම Enrollment එක බැගින් හදමු
+
         const enrollmentPromises = items.map(item => {
             return prisma.enrollment.create({
                 data: {
@@ -97,7 +91,7 @@ app.post('/api/enroll/checkout', async (req, res) => {
                     courseId: Number(item.id),
                     amount: Number(item.price),
                     transactionId: session.id,
-                    status: 'PENDING', // 👈 මුලින් PENDING දාමු
+                    status: 'PENDING',
                     progressPercent: 0,
                     isCompleted: false
                 }
@@ -106,16 +100,15 @@ app.post('/api/enroll/checkout', async (req, res) => {
 
         await Promise.all(enrollmentPromises);
 
-        res.json({ url: session.url });
+        res.json({url: session.url});
     } catch (error) {
         console.error('Stripe error:', error);
-        res.status(500).json({ error: "Checkout failed" });
+        res.status(500).json({error: "Checkout failed"});
     }
 });
 
 
-
-// 3. Billing History (ඔයා ඇහපු අලුත් එක)
+// Billing History
 app.get('/api/enroll/billing/:studentId', async (req, res) => {
     const {studentId} = req.params;
     console.log(`📡 Request received for Billing: Student ID ${studentId}`);
@@ -151,11 +144,10 @@ app.get('/api/enroll/billing/:studentId', async (req, res) => {
     }
 });
 
-// enrollment-service ඇතුළත complete-lesson API එක
+// enrollment-service complete-lesson API
 app.post('/api/enroll/complete-lesson', async (req, res) => {
     const {userId, courseId, lessonId, totalLessons} = req.body;
 
-    // 💡 Safety Check: totalLessons නැතිනම් හෝ 0 නම් error එකක් දෙමු
     if (!totalLessons || totalLessons === 0) {
         return res.status(400).json({error: "Total lessons count is required and cannot be zero"});
     }
@@ -171,7 +163,6 @@ app.post('/api/enroll/complete-lesson', async (req, res) => {
             where: {userId: Number(userId), courseId: Number(courseId)}
         });
 
-        // ✅ දැන් මෙතන 0 කින් බෙදෙන්නේ නැහැ
         const progress = (completedCount / totalLessons) * 100;
 
         await prisma.enrollment.updateMany({
@@ -184,24 +175,23 @@ app.post('/api/enroll/complete-lesson', async (req, res) => {
         res.status(500).json({error: "Internal Server Error"});
     }
 });
-// index.js ඇතුළත
+
 
 app.post('/api/enroll/confirm-payment', async (req, res) => {
-    const { sessionId } = req.body;
+    const {sessionId} = req.body;
 
     try {
-        // 💡 මේ session ID එක තියෙන ඔක්කොම Enrollments 'SUCCESS' කරනවා
         const updateResult = await prisma.enrollment.updateMany({
             where: {
                 transactionId: sessionId,
-                status: 'PENDING' // දැනටමත් success වෙලා නැති ඒවා විතරක් කරන්න
+                status: 'PENDING'
             },
-            data: { status: 'SUCCESS' }
+            data: {status: 'SUCCESS'}
         });
 
-        res.json({ success: true, updatedCount: updateResult.count });
+        res.json({success: true, updatedCount: updateResult.count});
     } catch (error) {
-        res.status(500).json({ error: "Failed to confirm payment" });
+        res.status(500).json({error: "Failed to confirm payment"});
     }
 });
 app.get('/api/enroll/completed-lessons/:userId/:courseId', async (req, res) => {
@@ -212,14 +202,14 @@ app.get('/api/enroll/completed-lessons/:userId/:courseId', async (req, res) => {
                 userId: Number(userId),
                 courseId: Number(courseId)
             },
-            select: {lessonId: true} // අපිට ඕනේ lessonId ටික විතරයි
+            select: {lessonId: true}
         });
         res.json(completed.map(c => c.lessonId));
     } catch (error) {
         res.status(500).json({error: "Fetch error"});
     }
 });
-// 2. Dashboard Enrollments (Updated)
+
 app.get('/api/enroll/student/:studentId', async (req, res) => {
     const {studentId} = req.params;
     try {
@@ -235,7 +225,6 @@ app.get('/api/enroll/student/:studentId', async (req, res) => {
                     courseTitle: courseRes.data.title,
                     courseThumbnail: courseRes.data.thumbnailUrl,
                     instructorName: courseRes.data.instructorName,
-                    // 💡 දැන් DB එකේ තියෙන ඇත්තම progress එක මෙතනට එනවා
                     progressPercent: enrol.progressPercent
                 };
             } catch (err) {
@@ -247,36 +236,32 @@ app.get('/api/enroll/student/:studentId', async (req, res) => {
         res.status(500).json({error: "Fetch error"});
     }
 });
-// enrollment-service/index.js
 
 app.get('/api/enroll/popular-ids', async (req, res) => {
     try {
-        // Enrollment table එකේ courseId අනුව group කරලා count එක ගමු
         const popularGroups = await prisma.enrollment.groupBy({
             by: ['courseId'],
             _count: {
                 courseId: true,
             },
             where: {
-                status: 'SUCCESS' // සල්ලි ගෙවපු ඒවා විතරයි
+                status: 'SUCCESS'
             },
             orderBy: {
                 _count: {
                     courseId: 'desc',
                 },
             },
-            take: 3, // වැඩිම 3ක්
+            take: 3,
         });
 
-        // ලස්සනට IDs ටික විතරක් Array එකක් විදිහට යවමු [1, 5, 8]
         const ids = popularGroups.map(group => group.courseId);
         res.json(ids);
     } catch (error) {
-        res.status(500).json({ error: "Failed to fetch popular IDs" });
+        res.status(500).json({error: "Failed to fetch popular IDs"});
     }
 });
 
-// 4. Check Status
 app.get('/api/enroll/check/:studentId/:courseId', async (req, res) => {
     const {studentId, courseId} = req.params;
     const enrollment = await prisma.enrollment.findFirst({
@@ -289,7 +274,48 @@ app.get('/api/enroll/check/:studentId/:courseId', async (req, res) => {
     res.json({enrolled: !!enrollment});
 });
 
-// --- SERVER START ---
+app.get('/api/enroll/admin/course-stats', async (req, res) => {
+    try {
+        const stats = await prisma.enrollment.groupBy({
+            by: ['courseId'],
+            where: {status: 'SUCCESS'},
+            _count: {id: true},
+            _sum: {amount: true}
+        });
+
+
+        const formattedStats = {};
+        stats.forEach(s => {
+            formattedStats[s.courseId] = {
+                count: s._count.id,
+                revenue: s._sum.amount
+            };
+        });
+
+        res.json(formattedStats);
+    } catch (error) {
+        res.status(500).json({error: "Failed to fetch course stats"});
+    }
+});
+app.get('/api/enroll/admin/monthly-revenue', async (req, res) => {
+    try {
+        const result = await prisma.$queryRaw`
+            SELECT TO_CHAR("createdAt", 'Mon') as month,
+                SUM(amount) as revenue
+            FROM "Enrollment"
+            WHERE status = 'SUCCESS'
+              AND "createdAt"
+                > NOW() - INTERVAL '6 months'
+            GROUP BY month, date_trunc('month', "createdAt")
+            ORDER BY date_trunc('month', "createdAt") ASC
+        `;
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({error: error.message});
+    }
+});
+
+
 app.listen(PORT, () => {
-    console.log(`🚀 Enrollment Service running on port ${PORT}`);
+    console.log(` Enrollment Service running on port ${PORT}`);
 });

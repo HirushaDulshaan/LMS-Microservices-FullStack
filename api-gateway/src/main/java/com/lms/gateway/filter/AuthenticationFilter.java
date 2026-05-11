@@ -44,7 +44,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                     authHeader = authHeader.substring(7);
                 }
 
-                // WebClient use karala non-blocking call ekak yawamu
+
                 // AuthenticationFilter.java (Gateway project)
                 return webClientBuilder.build()
                         .get()
@@ -53,7 +53,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                         .bodyToMono(String.class)
                         .flatMap(response -> chain.filter(exchange))
                         .onErrorResume(error -> {
-                            // 💡 AuthService එකෙන් error එකක් ආවොත් ඒක catch කරලා 401ක් දෙමු
+                            //if authservice error came
                             System.out.println("Validation failed: " + error.getMessage());
                             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
                             return exchange.getResponse().setComplete();

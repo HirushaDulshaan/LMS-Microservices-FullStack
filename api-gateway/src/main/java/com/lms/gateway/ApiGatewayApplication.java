@@ -14,7 +14,7 @@ public class ApiGatewayApplication {
         SpringApplication.run(ApiGatewayApplication.class, args);
     }
     @Bean
-    @LoadBalanced // Eureka වල තියෙන service name එකෙන් කතා කරන්න මේක ඕනේ
+    @LoadBalanced
     public WebClient.Builder webClientBuilder() {
         return WebClient.builder();
     }

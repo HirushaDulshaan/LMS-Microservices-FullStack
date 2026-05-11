@@ -21,6 +21,6 @@ public class Subject {
     private String name;
 
     @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL)
-    @JsonIgnore // <--- මේක දාන්න. එතකොට dropdown එකට එන JSON එක පට්ට සරලයි.
+    @JsonIgnore
     private List<Course> courses;
 }

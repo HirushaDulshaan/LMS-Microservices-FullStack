@@ -57,13 +57,10 @@ public class AuthController {
             throw new RuntimeException("Invalid Authorization Header");
         }
 
-        // 1. Token එකෙන් Email එක extract කරනවා
         String email = jwtService.extractUsername(token);
 
-        // 2. Email එකෙන් Real User Object එක ගන්නවා
         User user = service.getUserByEmail(email);
 
-        // 3. User ID එක සහ Role එක DTO එකක් විදියට පටවනවා
         return new UserDetailResponse(user.getId(), user.getRole().name());
     }
 }

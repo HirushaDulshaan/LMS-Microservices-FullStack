@@ -31,20 +31,18 @@ public class LessonService {
     public Lesson addLessonToCourse(Long courseId, Lesson lesson) {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new RuntimeException("Course not found"));
-        lesson.setCourse(course); // මේක අනිවාර්යයි!
+        lesson.setCourse(course);
         return lessonRepository.save(lesson);
     }
 
     public List<Lesson> getLessonsByCourseId(Long courseId) {
         return lessonRepository.findByCourseId(courseId);
     }
-    // LessonService.java ඇතුළත මේවා එකතු කරන්න
 
     public Lesson getLessonById(Long courseId, Long lessonId) {
         Lesson lesson = lessonRepository.findById(lessonId)
                 .orElseThrow(() -> new RuntimeException("Lesson not found"));
 
-        // ආරක්ෂක පියවර: මේ ලසන් එක මේ කෝස් එකටමද අයිති කියලා බලනවා
         if (!lesson.getCourse().getId().equals(courseId)) {
             throw new RuntimeException("Lesson does not belong to this course");
         }
@@ -52,15 +50,12 @@ public class LessonService {
     }
 
     public Lesson updateLesson(Long courseId, Long lessonId, Lesson lessonDetails) {
-        // 1. කලින් තියෙන ලසන් එක හොයාගමු
         Lesson existingLesson = getLessonById(courseId, lessonId);
 
-        // 2. දත්ත අප්ඩේට් කරමු
         existingLesson.setTitle(lessonDetails.getTitle());
         existingLesson.setVideoUrl(lessonDetails.getVideoUrl());
         existingLesson.setContent(lessonDetails.getContent());
 
-        // 3. සේව් කරමු
         return lessonRepository.save(existingLesson);
     }
 

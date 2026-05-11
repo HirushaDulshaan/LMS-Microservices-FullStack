@@ -8,5 +8,5 @@ public class UserUpdateRequest {
     private String firstName;
     private String lastName;
     private String mobileNumber;
-    private Address address; // වීදි, නගරය, තැපැල් කේතය සහ රට මෙතන තියෙනවා
+    private Address address;
 }

@@ -16,8 +16,8 @@ public class Lesson {
     private Long id;
 
     private String title;
-    private String videoUrl; // Video eke link eka (e.g., S3 ho YouTube)
-    private String content;  // Text descriptions wage dewal
+    private String videoUrl;
+    private String content;
 
     @ManyToOne
     @JoinColumn(name = "course_id")

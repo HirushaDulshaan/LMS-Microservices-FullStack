@@ -35,7 +35,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role = Role.STUDENT;
 
-    // 👇 අලුතින් ඇඩ් කරපු කෑල්ල
     @Embedded
     private Address address;
 }

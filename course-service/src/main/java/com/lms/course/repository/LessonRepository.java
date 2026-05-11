@@ -8,7 +8,6 @@ import java.util.List;
 
 @Repository
 public interface LessonRepository extends JpaRepository<Lesson, Long> {
-    // Specific course ekakata thiyena lessons tika list karanna
     List<Lesson> findByCourseId(Long courseId);
     long countByCourseId(Long courseId);
 }

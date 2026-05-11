@@ -29,7 +29,7 @@ public class Course {
     private String level;
     private Long teacherId;
 
-    private String instructorName; // 👈 මේ පේළිය අලුතින් ඇඩ් කරන්න. එතකොට setInstructorName වැඩ කරයි.
+    private String instructorName;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "subject_id")

@@ -14,13 +14,13 @@ spring:
             allowedMethods: "*"
             allowedHeaders: "*"
       routes:
-        # ✅ 1. Auth Public (Login/Register)
+        #  auth public login and register endpoints
         - id: auth-service-public
           uri: lb://auth-service
           predicates:
             - Path=/auth/login, /auth/register
 
-        # ✅ 2. Auth Protected (Token Validation required)
+        # Auth Protected (Token Validation required)
         - id: auth-service-protected
           uri: lb://auth-service
           predicates:
@@ -28,7 +28,7 @@ spring:
           filters:
             - AuthenticationFilter
 
-        # ✅ 3. User Profile (Protected)
+        # User Profile (Protected)
         - id: user-service-protected
           uri: lb://auth-service
           predicates:
@@ -36,13 +36,13 @@ spring:
           filters:
             - AuthenticationFilter
 
-        # ✅ 4. Course Service - PUBLIC (No Login required)
+        # Course Service - PUBLIC (No Login required)
         - id: course-service-public
           uri: lb://course-service
           predicates:
             - Path=/courses/all, /courses/subjects/all, /courses/{id}, /courses/{id}/lessons/**
 
-        # ✅ 5. Course Service - PROTECTED (Instructors/Admins only)
+        # Course Service - PROTECTED (Instructors/Admins only)
         - id: course-service-protected
           uri: lb://course-service
           predicates:
@@ -50,7 +50,7 @@ spring:
           filters:
             - AuthenticationFilter
 
-        # ✅ 6. Enrollment Service - PROTECTED (Node.js Service)
+        # Enrollment Service - PROTECTED (Node.js Service)
         - id: enrollment-service
           uri: lb://enrollment-service
           predicates:

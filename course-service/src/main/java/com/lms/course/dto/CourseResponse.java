@@ -14,7 +14,7 @@ public class CourseResponse {
     private String thumbnailUrl;
     private String level;
     private Long teacherId;
-    private String instructorName; // 👈 මේක අලුතින් ඇඩ් කළා
+    private String instructorName;
     private Subject subject;
     private List<Lesson> lessons;
 }
