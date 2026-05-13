@@ -1,0 +1,154 @@
+<mat-drawer-container class="courses-drawer-container" autosize>
+
+  <mat-drawer #filterDrawer mode="over" class="filter-drawer shadow-lg">
+    <div class="drawer-header p-4 border-bottom d-flex justify-content-between align-items-center bg-light">
+      <h5 class="fw-bold m-0"><mat-icon class="align-middle me-2">tune</mat-icon> Filters</h5>
+      <button mat-icon-button (click)="filterDrawer.close()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <div class="filter-content p-3">
+      <mat-accordion multi displayMode="flat">
+        <mat-expansion-panel [expanded]="true" class="border-0 shadow-none">
+          <mat-expansion-panel-header>
+            <mat-panel-title class="fw-bold small text-uppercase">Category</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="d-flex flex-column gap-2 pb-3">
+            <mat-checkbox *ngFor="let cat of categories" [(ngModel)]="cat.selected"
+                          (change)="applyFilters()" color="primary">
+              {{cat.name | titlecase}}
+            </mat-checkbox>
+          </div>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [expanded]="true" class="border-0 shadow-none">
+          <mat-expansion-panel-header>
+            <mat-panel-title class="fw-bold small text-uppercase">Skill Level</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="d-flex flex-column gap-2 pb-3">
+            <mat-checkbox *ngFor="let lvl of levels" [(ngModel)]="lvl.selected"
+                          (change)="applyFilters()" color="primary">
+              {{lvl.name}}
+            </mat-checkbox>
+          </div>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [expanded]="true" class="border-0 shadow-none">
+          <mat-expansion-panel-header>
+            <mat-panel-title class="fw-bold small text-uppercase">Price Range</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="py-2 px-2">
+            <div class="d-flex justify-content-between mb-2">
+              <span class="text-muted small">Max Price:</span>
+              <span class="fw-bold text-primary">LKR {{maxPriceFilter}}</span>
+            </div>
+            <mat-slider min="0" max="15000" step="500" class="w-100 mb-0">
+              <input matSliderThumb [(ngModel)]="maxPriceFilter" (valueChange)="applyFilters()">
+            </mat-slider>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+
+    <div class="p-4 border-top mt-auto">
+      <div class="d-grid gap-2">
+        <button mat-flat-button color="primary" class="py-3 rounded-pill" (click)="filterDrawer.close()">
+          Show Results
+        </button>
+        <button mat-button color="warn" (click)="resetFilters()">Reset All</button>
+      </div>
+    </div>
+  </mat-drawer>
+
+  <mat-drawer-content class="bg-soft-light min-vh-100">
+    <div class="container py-5">
+
+      <div class="row mb-5 justify-content-center">
+        <div class="col-lg-10">
+          <div class="d-flex gap-2">
+            <button mat-flat-button class="filter-toggle-btn shadow-sm" (click)="filterDrawer.toggle()">
+              <mat-icon>tune</mat-icon>
+              <span class="ms-2 d-none d-sm-inline">Filters</span>
+            </button>
+
+            <div class="search-glass-wrapper shadow-sm flex-grow-1">
+              <mat-icon class="search-icon">search</mat-icon>
+              <input type="text" placeholder="Search for skills, subjects or mentors..."
+                     [(ngModel)]="searchQuery" (keyup)="applyFilters()">
+              <button class="search-btn d-none d-md-block" (click)="applyFilters()">Search</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3 bg-white p-3 rounded-4 shadow-sm border">
+            <h6 class="m-0 fw-bold text-dark ps-2">Showing {{ filteredCourses.length }} elite courses</h6>
+            <div class="d-flex align-items-center gap-2">
+              <span class="small text-muted fw-bold text-uppercase">Sort By:</span>
+              <mat-form-field appearance="outline" class="dense-select" subscriptSizing="dynamic">
+                <mat-select [(value)]="selectedSort" (selectionChange)="sortCourses()">
+                  <mat-option value="">Newest Arrivals</mat-option>
+                  <mat-option value="popular">Top Rated</mat-option>
+                  <mat-option value="price-low">Price: Low to High</mat-option>
+                  <mat-option value="price-high">Price: High to Low</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row g-4" *ngIf="filteredCourses.length > 0">
+            <div class="col-md-6 col-lg-4 col-xl-3" *ngFor="let course of paginatedCourses">
+              <div class="modern-course-card h-100 shadow-sm" [routerLink]="['/course', course.id]">
+                <div class="card-img-box">
+                  <img [src]="course.thumbnail" alt="Course Cover">
+                  <div class="card-tag">{{course.category}}</div>
+                </div>
+                <div class="card-body p-4 d-flex flex-column">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <span class="level-badge">{{course.level}}</span>
+                    <div class="rating-box">
+                      <mat-icon class="star-icon">star</mat-icon>
+                      <span>{{course.rating}}</span>
+                    </div>
+                  </div>
+                  <h3 class="fw-bold course-name mb-2 text-truncate-2">{{ course.title }}</h3>
+                  <p class="text-muted small mb-0">By <span class="fw-bold">{{ course.instructor }}</span></p>
+                  <div class="mt-4 pt-3 border-top d-flex justify-content-between align-items-center">
+                    <div class="price-tag">LKR {{ course.price }}</div>
+                    <button mat-icon-button class="text-primary-soft">
+                      <mat-icon>bookmark_border</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="filteredCourses.length === 0" class="text-center py-5 empty-state shadow-sm bg-white rounded-4 border border-dashed mt-4">
+            <mat-icon class="display-1 text-muted opacity-25">school</mat-icon>
+            <h3 class="mt-3 fw-bold">No courses found matching your criteria</h3>
+            <button mat-flat-button color="primary" class="rounded-pill px-4 mt-2" (click)="resetFilters()">Clear Filters</button>
+          </div>
+
+          <div class="d-flex justify-content-center mt-5" *ngIf="filteredCourses.length > 0">
+            <div class="pagination-wrapper p-2 bg-white shadow-sm rounded-pill border">
+              <button mat-icon-button [disabled]="currentPage === 1" (click)="onPageChange(currentPage - 1)">
+                <mat-icon>chevron_left</mat-icon>
+              </button>
+              <button mat-mini-fab *ngFor="let page of pageNumbers"
+                      [color]="page === currentPage ? 'primary' : 'white'"
+                      class="mx-1 shadow-none"
+                      (click)="onPageChange(page)">{{page}}</button>
+              <button mat-icon-button [disabled]="currentPage === totalPages" (click)="onPageChange(currentPage + 1)">
+                <mat-icon>chevron_right</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>

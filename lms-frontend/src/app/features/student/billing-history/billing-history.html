@@ -1,0 +1,78 @@
+
+<div class="container py-5">
+  
+  <div class="d-flex align-items-center mb-4">
+    <h1 class="fw-bold m-0">Billing History</h1>
+  </div>
+
+  <mat-card class="shadow-sm">
+    <mat-card-content class="p-0 table-responsive">
+      
+      <div *ngIf="isLoading" class="p-5 text-center">
+        <div class="spinner-border text-primary" role="status"></div>
+      </div>
+
+      <table mat-table [dataSource]="billingHistory" class="w-100" *ngIf="!isLoading && billingHistory.length > 0">
+
+        <!-- Invoice ID -->
+        <ng-container matColumnDef="invoice">
+          <th mat-header-cell *matHeaderCellDef> Invoice ID </th>
+          <td mat-cell *matCellDef="let item" class="text-muted small"> {{item.invoiceId}} </td>
+        </ng-container>
+
+        <!-- Date -->
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef> Date </th>
+          <td mat-cell *matCellDef="let item"> {{item.date | date:'mediumDate'}} </td>
+        </ng-container>
+
+        <!-- Course -->
+        <ng-container matColumnDef="course">
+          <th mat-header-cell *matHeaderCellDef> Course </th>
+          <td mat-cell *matCellDef="let item" class="fw-bold text-primary"> {{item.courseTitle}} </td>
+        </ng-container>
+
+        <!-- Amount -->
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef> Amount </th>
+          <td mat-cell *matCellDef="let item"> 
+            {{ item.amount | currency }} 
+          </td>
+        </ng-container>
+
+        <!-- Status -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef> Status </th>
+          <td mat-cell *matCellDef="let item">
+            <mat-chip [class.bg-success]="item.status === 'Paid'" 
+                      [class.bg-info]="item.status === 'Free'"
+                      class="text-white small-chip">
+              {{item.status}}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <!-- Action -->
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef> Action </th>
+          <td mat-cell *matCellDef="let item">
+            <button mat-icon-button color="primary" (click)="downloadInvoice(item.invoiceId)" title="Download Invoice">
+              <mat-icon>download</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <!-- Empty State -->
+      <div *ngIf="!isLoading && billingHistory.length === 0" class="text-center p-5">
+        <mat-icon class="display-3 text-muted mb-2">receipt_long</mat-icon>
+        <p class="text-muted">No purchase history found.</p>
+        <button mat-stroked-button color="primary" routerLink="/courses">Browse Courses</button>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+</div>

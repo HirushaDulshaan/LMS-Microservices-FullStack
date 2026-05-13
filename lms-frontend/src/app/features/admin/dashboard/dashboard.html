@@ -1,0 +1,132 @@
+<div class="container-fluid p-4 bg-light min-vh-100">
+
+  <div class="d-flex justify-content-between align-items-center mb-5">
+    <div>
+      <h2 class="fw-bold m-0 text-dark">Dashboard Overview</h2>
+      <p class="text-muted m-0">Real-time system insights for Admin</p>
+    </div>
+  </div>
+
+  <div class="row g-4 mb-4">
+    <div class="col-xl-3 col-md-6">
+      <mat-card class="stat-card border-0 shadow-sm h-100 rounded-4">
+        <mat-card-content class="p-4 d-flex flex-column h-100">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="icon-wrapper bg-primary-subtle text-primary p-2 rounded-circle shadow-sm">
+              <mat-icon>group</mat-icon>
+            </div>
+            <span class="badge rounded-pill bg-primary-subtle text-primary">+{{ totalStudents > 0 ? 'Live' : '0' }}</span>
+          </div>
+          <div class="mt-auto">
+            <p class="text-muted fw-bold small text-uppercase mb-1">Total Users</p>
+            <h1 class="fw-bold display-6 mb-0 text-dark">{{ totalStudents + totalInstructors }}</h1>
+          </div>
+          <mat-divider class="my-3"></mat-divider>
+          <div class="d-flex justify-content-between small text-muted">
+            <span>Students: <strong class="text-primary">{{ totalStudents }}</strong></span>
+            <span>Instructors: <strong class="text-warning">{{ totalInstructors }}</strong></span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+      <mat-card class="stat-card border-0 shadow-sm h-100 rounded-4">
+        <mat-card-content class="p-4 d-flex flex-column h-100">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="icon-wrapper bg-warning-subtle text-warning p-2 rounded-circle shadow-sm">
+              <mat-icon>library_books</mat-icon>
+            </div>
+            <span class="badge rounded-pill bg-warning-subtle text-warning">Active</span>
+          </div>
+          <div class="mt-auto">
+            <p class="text-muted fw-bold small text-uppercase mb-1">Active Courses</p>
+            <h1 class="fw-bold display-6 mb-0 text-dark">{{ totalCourses }}</h1>
+          </div>
+          <mat-divider class="my-3"></mat-divider>
+          <div class="d-flex justify-content-between small text-muted">
+            <span>Published across all categories</span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+      <mat-card class="stat-card border-0 shadow-sm h-100 rounded-4">
+        <mat-card-content class="p-4 d-flex flex-column h-100">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="icon-wrapper bg-success-subtle text-success p-2 rounded-circle shadow-sm">
+              <mat-icon>payments</mat-icon>
+            </div>
+            <span class="badge rounded-pill bg-success-subtle text-success">LKR Verified</span>
+          </div>
+          <div class="mt-auto">
+            <p class="text-muted fw-bold small text-uppercase mb-1">Total Revenue</p>
+            <h1 class="fw-bold display-6 mb-0 text-dark">{{ totalRevenue | currency:'LKR ':'symbol':'1.0-0' }}</h1>
+          </div>
+          <mat-divider class="my-3"></mat-divider>
+          <div class="d-flex justify-content-between small text-muted">
+            <span>Lifetime Earnings</span>
+            <strong class="text-success">Real-time</strong>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+      <mat-card class="stat-card border-0 shadow-sm h-100 rounded-4">
+        <mat-card-content class="p-4 d-flex flex-column h-100">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="icon-wrapper bg-info-subtle text-info p-2 rounded-circle shadow-sm">
+              <mat-icon>school</mat-icon>
+            </div>
+            <span class="badge rounded-pill bg-info-subtle text-info">Sales</span>
+          </div>
+          <div class="mt-auto">
+            <p class="text-muted fw-bold small text-uppercase mb-1">Total Enrollments</p>
+            <h1 class="fw-bold display-6 mb-0 text-dark">{{ totalEnrollments }}</h1>
+          </div>
+          <mat-divider class="my-3"></mat-divider>
+          <div class="d-flex justify-content-between small text-muted">
+            <span>Verified Student Purchases</span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="row g-4 mb-4">
+    <div class="col-lg-8">
+      <mat-card class="border-0 shadow-sm h-100 rounded-4">
+        <mat-card-header class="border-bottom p-3">
+          <h5 class="fw-bold m-0 text-dark">Revenue & Enrollment Trends</h5>
+        </mat-card-header>
+        <mat-card-content class="p-4" style="height: 350px;">
+          <canvas baseChart
+                  [data]="barChartData"
+                  [options]="barChartOptions"
+                  [type]="barChartType">
+          </canvas>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="col-lg-4">
+      <mat-card class="border-0 shadow-sm h-100 rounded-4">
+        <mat-card-header class="border-bottom p-3">
+          <h5 class="fw-bold m-0 text-dark">Recent Activity</h5>
+        </mat-card-header>
+        <mat-card-content class="p-0">
+          <mat-list>
+            <mat-list-item *ngFor="let item of recentActivities" class="h-auto py-3 border-bottom">
+              <mat-icon matListItemIcon class="text-primary">{{ item.icon }}</mat-icon>
+              <span matListItemTitle class="fw-bold text-dark">{{ item.title }}</span>
+              <span matListItemLine class="text-muted small">{{ item.desc }}</span>
+              <span matListItemMeta class="text-muted small">{{ item.time }}</span>
+            </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

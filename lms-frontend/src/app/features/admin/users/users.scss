@@ -1,0 +1,25 @@
+.search-field { width: 350px; background: white; border-radius: 12px; }
+
+.premium-table {
+  .mat-mdc-header-row { background: #f8fafc; }
+  .mat-mdc-header-cell { color: #64748b; font-weight: 700; text-uppercase: uppercase; font-size: 12px; }
+  .mat-mdc-cell { border-bottom: 1px solid #f1f5f9; }
+}
+
+.clickable-row {
+  cursor: pointer;
+  transition: all 0.2s;
+  &:hover { background: #f8faff !important; }
+}
+
+.user-avatar-small {
+  width: 35px; height: 35px; background: #e0e7ff; color: #4f46e5;
+  border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: bold;
+}
+
+.role-badge {
+  padding: 4px 12px; border-radius: 8px; font-size: 11px; font-weight: 700;
+  &.admin { background: #fee2e2; color: #ef4444; }
+  &.instructor { background: #ecfdf5; color: #10b981; }
+  &.student { background: #eff6ff; color: #3b82f6; }
+}

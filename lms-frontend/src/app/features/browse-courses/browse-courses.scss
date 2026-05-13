@@ -1,0 +1,252 @@
+$primary: #4f46e5;
+$bg-soft: #f8fafc;
+
+.bg-soft-light {
+  background-color: $bg-soft;
+}
+
+// 🔍 Search Bar
+.search-glass-wrapper {
+  background: #ffffff;
+  padding: 8px 8px 8px 25px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  border: 1px solid #e2e8f0;
+
+  input {
+    border: none;
+    outline: none;
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 1.1rem;
+    color: #334155;
+  }
+
+  .search-icon { color: #94a3b8; }
+
+  .search-btn {
+    background: $primary;
+    color: white;
+    border: none;
+    padding: 12px 35px;
+    border-radius: 40px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    &:hover { background: #4338ca; }
+  }
+}
+
+// 🛠️ Sidebar
+.filter-sidebar {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.sticky-filter {
+  top: 100px;
+}
+
+// 📚 Course Card
+.modern-course-card {
+  background: white;
+  border-radius: 20px;
+  border: 1px solid rgba(0,0,0,0.03);
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 25px 40px rgba(0,0,0,0.1) !important;
+
+    .card-img-box img { transform: scale(1.1); }
+    .hover-action { opacity: 1; }
+  }
+
+  .card-img-box {
+    height: 170px;
+    overflow: hidden;
+    position: relative;
+
+    img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.8s ease;
+    }
+
+    .card-tag {
+      position: absolute;
+      top: 15px; left: 15px;
+      background: rgba(79, 70, 229, 0.9);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      backdrop-filter: blur(5px);
+    }
+
+    .hover-action {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+  }
+}
+
+.course-name {
+  font-size: 1.15rem;
+  line-height: 1.4;
+  color: #1e293b;
+}
+
+.text-truncate-2 {
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 3.2rem;
+}
+
+.level-badge {
+  background: #f1f5f9;
+  color: #64748b;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-uppercase: uppercase;
+}
+
+.rating-box {
+  display: flex;
+  align-items: center;
+  background: #fff9db;
+  color: #f59e0b;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 0.85rem;
+  .star-icon { font-size: 16px; width: 16px; height: 16px; margin-right: 3px; }
+}
+
+.price-tag {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: $primary;
+}
+
+.dense-select {
+  width: 180px;
+  ::ng-deep .mat-mdc-text-field-wrapper { height: 45px !important; padding-top: 0; padding-bottom: 0; background-color: #f8fafc !important; }
+}
+
+.pagination-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+$primary: #4f46e5;
+$bg-soft: #f8fafc;
+
+.courses-drawer-container {
+  height: 100vh;
+  background-color: $bg-soft;
+}
+
+// 🚪 Filter Drawer Styling
+.filter-drawer {
+  width: 320px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  border: none;
+  border-radius: 0 25px 25px 0;
+}
+
+// 🔍 Search Glass Wrapper
+.search-glass-wrapper {
+  background: #ffffff;
+  padding: 6px 6px 6px 20px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  border: 1px solid #e2e8f0;
+  height: 60px;
+
+  input {
+    border: none;
+    outline: none;
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 1rem;
+    color: #334155;
+  }
+  .search-icon { color: #94a3b8; }
+  .search-btn {
+    background: $primary;
+    color: white;
+    border: none;
+    padding: 0 30px;
+    height: 100%;
+    border-radius: 40px;
+    font-weight: bold;
+  }
+}
+
+// 🔘 Filter Toggle Button
+.filter-toggle-btn {
+  height: 60px !important;
+  border-radius: 50px !important;
+  background: white !important;
+  color: $primary !important;
+  border: 1px solid #e2e8f0 !important;
+  padding: 0 25px !important;
+
+  &:hover {
+    background: #f1f5f9 !important;
+  }
+}
+
+// 📚 Course Cards
+.modern-course-card {
+  background: white;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 30px rgba(0,0,0,0.08) !important;
+  }
+  .card-img-box {
+    height: 180px;
+    position: relative;
+    img { width: 100%; height: 100%; object-fit: cover; }
+    .card-tag {
+      position: absolute; top: 12px; left: 12px;
+      background: rgba(79, 70, 229, 0.9);
+      color: white; padding: 4px 12px; border-radius: 8px; font-size: 0.7rem; font-weight: bold;
+    }
+  }
+}
+
+.text-truncate-2 {
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+.price-tag { font-size: 1.2rem; font-weight: 800; color: $primary; }
+
+.dense-select {
+  width: 180px;
+  ::ng-deep .mat-mdc-text-field-wrapper { height: 45px !important; background-color: #f8fafc !important; }
+}
+
+// Backdrop Blur
+::ng-deep .mat-drawer-backdrop.mat-drawer-shown {
+  background-color: rgba(15, 23, 42, 0.3) !important;
+  backdrop-filter: blur(4px);
+}

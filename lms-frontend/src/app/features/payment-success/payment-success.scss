@@ -1,0 +1,23 @@
+.small-chip {
+  height: 24px !important;
+  font-size: 11px !important;
+  font-weight: 600;
+}
+
+.mat-column-invoice { font-family: 'Courier New', Courier, monospace; }
+
+tr.mat-mdc-row:hover {
+  background-color: #f8f9fa;
+  cursor: pointer;
+}
+
+th.mat-mdc-header-cell {
+  background-color: #f1f3f5;
+  font-weight: bold;
+  color: #495057;
+}
+
+.table-responsive {
+  border-radius: 8px;
+  overflow: hidden;
+}

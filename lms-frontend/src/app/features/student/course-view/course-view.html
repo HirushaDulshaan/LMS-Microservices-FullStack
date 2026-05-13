@@ -1,0 +1,76 @@
+<div class="container-fluid py-4 bg-light min-vh-100">
+  <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center py-5">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+
+  <div class="row g-4" *ngIf="!isLoading && course">
+    <div class="col-lg-8">
+      <div class="video-container shadow-lg rounded-4 overflow-hidden bg-black mb-3">
+        <iframe
+          *ngIf="safeVideoUrl"
+          [src]="safeVideoUrl"
+          width="100%"
+          height="500px"
+          frameborder="0"
+          allowfullscreen>
+        </iframe>
+        <div *ngIf="!safeVideoUrl" class="d-flex align-items-center justify-content-center text-white" style="height: 500px;">
+          <p>No video available for this lesson.</p>
+        </div>
+      </div>
+
+      <div class="bg-white p-4 rounded-4 shadow-sm">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <h2 class="fw-bold m-0">{{ selectedLesson?.title }}</h2>
+          <button mat-flat-button
+                  [color]="selectedLesson?.isCompleted ? 'accent' : 'primary'"
+                  [disabled]="selectedLesson?.isCompleted"
+                  (click)="markAsComplete(selectedLesson)">
+            <mat-icon>{{ selectedLesson?.isCompleted ? 'check_circle' : 'done' }}</mat-icon>
+            {{ selectedLesson?.isCompleted ? 'Completed' : 'Mark as Complete' }}
+          </button>
+        </div>
+
+        <div class="d-flex align-items-center text-muted small mb-3">
+          <mat-icon class="icon-sm me-1">person</mat-icon> {{ course?.instructorName }}
+          <mat-icon class="icon-sm ms-3 me-1">update</mat-icon> Updated {{ course?.updatedAt | date }}
+        </div>
+        <mat-divider class="mb-3"></mat-divider>
+        <p class="course-desc">{{ course?.description }}</p>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <mat-card class="mb-3 border-0 shadow-sm rounded-4 p-3 bg-white">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="fw-bold">Overall Progress</span>
+          <span class="badge rounded-pill bg-primary">{{ progressPercentage }}%</span>
+        </div>
+        <mat-progress-bar mode="determinate" [value]="progressPercentage"></mat-progress-bar>
+      </mat-card>
+
+      <mat-card class="lesson-list-card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="p-3 bg-dark text-white d-flex align-items-center justify-content-between">
+          <h3 class="fw-bold m-0 fs-5">Course Content</h3>
+          <span class="badge bg-primary">{{ lessons.length }} Lessons</span>
+        </div>
+
+        <mat-nav-list class="lesson-nav">
+          <a mat-list-item
+             *ngFor="let lesson of lessons; let i = index"
+             (click)="selectLesson(lesson)"
+             [class.active-lesson]="selectedLesson?.id === lesson.id">
+
+            <mat-icon matListItemIcon [color]="lesson.isCompleted ? 'accent' : (selectedLesson?.id === lesson.id ? 'primary' : '')">
+              {{ lesson.isCompleted ? 'check_circle' : (selectedLesson?.id === lesson.id ? 'play_circle_filled' : 'play_circle_outline') }}
+            </mat-icon>
+
+            <div matListItemTitle [class.fw-bold]="selectedLesson?.id === lesson.id">
+              <span class="text-muted me-2">{{ i + 1 }}.</span> {{ lesson.title }}
+            </div>
+          </a>
+        </mat-nav-list>
+      </mat-card>
+    </div>
+  </div>
+</div>

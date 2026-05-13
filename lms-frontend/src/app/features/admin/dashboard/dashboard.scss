@@ -1,0 +1,46 @@
+// Stats Icons
+.icon-large {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+}
+
+// Background Colors
+.bg-primary-subtle { background-color: #e3f2fd; color: #1976d2; }
+.bg-info-subtle { background-color: #e0f7fa; color: #0097a7; }
+.bg-warning-subtle { background-color: #fff3e0; color: #f57c00; }
+.bg-success-subtle { background-color: #e8f5e9; color: #388e3c; }
+
+// Custom Card Styling
+.stat-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s;
+  cursor: default;
+  border-top: 4px solid transparent;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+  }
+}
+
+// Specific Border Colors per Card Type
+.card-users { border-top-color: #0d6efd; }       // Primary Blue
+.card-courses { border-top-color: #ffc107; }     // Warning Yellow
+.card-revenue { border-top-color: #198754; }     // Success Green
+.card-enrollments { border-top-color: #0dcaf0; } // Info Cyan
+
+// Icon Wrapper Circle
+.icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+  }
+}

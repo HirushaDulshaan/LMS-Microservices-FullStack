@@ -1,0 +1,60 @@
+<aside class="sidebar-container" [class.open]="isSidebarOpen">
+
+  <div class="user-profile-summary">
+    <div class="avatar-circle shadow-sm">{{ getInitial() }}</div>
+    <div class="user-info">
+      <span class="user-name">{{ userName }}</span>
+      <span class="user-role">Student Account</span>
+    </div>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <mat-nav-list class="sidebar-nav">
+
+    <a mat-list-item
+       routerLink="/student/dashboard"
+       routerLinkActive="active-link"
+       [routerLinkActiveOptions]="{exact: true}">
+      <mat-icon matListItemIcon>dashboard</mat-icon>
+      <span matListItemTitle>Dashboard</span>
+    </a>
+
+    <a mat-list-item
+       routerLink="/student/profile"
+       routerLinkActive="active-link">
+      <mat-icon matListItemIcon>person_outline</mat-icon>
+      <span matListItemTitle>My Profile</span>
+    </a>
+
+    <a mat-list-item
+       routerLink="/student/enroller-cources"
+       routerLinkActive="active-link">
+      <mat-icon matListItemIcon>local_library</mat-icon>
+      <span matListItemTitle>Enrolled Courses</span>
+    </a>
+
+    <a mat-list-item
+       routerLink="/student/billing-history"
+       routerLinkActive="active-link">
+      <mat-icon matListItemIcon>receipt_long</mat-icon>
+      <span matListItemTitle>Billing History</span>
+    </a>
+
+    <a mat-list-item
+       routerLink="/student/security"
+       routerLinkActive="active-link">
+      <mat-icon matListItemIcon>lock_open</mat-icon>
+      <span matListItemTitle>Security Settings</span>
+    </a>
+
+    <div class="spacer"></div>
+
+    <mat-divider></mat-divider>
+
+    <a mat-list-item class="logout-link" (click)="logout()">
+      <mat-icon matListItemIcon color="warn">logout</mat-icon>
+      <span matListItemTitle>Log Out</span>
+    </a>
+  </mat-nav-list>
+</aside>

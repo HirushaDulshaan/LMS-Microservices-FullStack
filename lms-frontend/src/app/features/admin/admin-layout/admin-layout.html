@@ -1,0 +1,64 @@
+<div class="container-fluid py-4 bg-light min-vh-100">
+  <div class="row">
+    
+    <!-- LEFT SIDEBAR -->
+    <div class="col-md-2 mb-4">
+      <mat-card class="sidebar-card border-0 shadow-sm h-100 position-sticky" style="top: 20px;">
+        <div class="text-center p-4 border-bottom bg-white">
+          <div class="avatar-circle mb-3 mx-auto">
+            <mat-icon class="icon-lg text-primary">admin_panel_settings</mat-icon>
+          </div>
+          <h5 class="fw-bold m-0 text-dark">Admin Portal</h5>
+          <p class="text-muted small m-0">System Administrator</p>
+        </div>
+        
+        <mat-nav-list class="py-2">
+          <!-- Dashboard -->
+          <a mat-list-item routerLink="/admin/dashboard" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
+            <mat-icon matListItemIcon>dashboard</mat-icon>
+            <span matListItemTitle>Overview</span>
+          </a>
+
+          <!-- User Management -->
+          <a mat-list-item routerLink="/admin/users" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>people</mat-icon>
+            <span matListItemTitle>Users</span>
+          </a>
+
+          <!-- Course Management -->
+          <a mat-list-item routerLink="/admin/courses" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>library_books</mat-icon>
+            <span matListItemTitle>Courses</span>
+          </a>
+
+          <!-- Reports -->
+          <a mat-list-item routerLink="/admin/reports" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>assessment</mat-icon>
+            <span matListItemTitle>Reports</span>
+          </a>
+
+          <!-- Settings -->
+          <a mat-list-item routerLink="/admin/settings" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>settings</mat-icon>
+            <span matListItemTitle>Settings</span>
+          </a>
+
+          <mat-divider class="my-2"></mat-divider>
+
+          <!-- Logout -->
+          <a mat-list-item class="text-danger mt-1" style="cursor: pointer;" (click)="logout()">
+            <mat-icon matListItemIcon class="text-danger">logout</mat-icon>
+            <span matListItemTitle>Logout</span>
+          </a>
+        </mat-nav-list>
+      </mat-card>
+    </div>
+
+    <!-- RIGHT CONTENT AREA -->
+    <div class="col-md-10">
+      <!-- Content changes here -->
+      <router-outlet></router-outlet>
+    </div>
+
+  </div>
+</div>

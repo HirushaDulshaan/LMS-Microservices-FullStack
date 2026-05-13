@@ -1,0 +1,118 @@
+<div class="container py-5">
+  
+  <!-- 1. HEADER & STATS -->
+  <div class="row mb-5">
+    <div class="col-md-8">
+      <h1 class="fw-bold mb-1">Welcome back, {{userName}}! 👋</h1>
+      <p class="text-muted">Here is an overview of your learning progress.</p>
+    </div>
+    
+    <!-- Stats Cards -->
+    <div class="col-md-12 mt-3">
+      <div class="row g-3">
+        <div class="col-md-4" *ngFor="let stat of stats">
+          <mat-card class="border-0 shadow-sm h-100">
+            <mat-card-content class="d-flex align-items-center p-3">
+              <div class="rounded-circle p-3 me-3" [ngClass]="stat.bg">
+                <mat-icon class="fs-2 icon-large" [ngClass]="stat.color">{{stat.icon}}</mat-icon>
+              </div>
+              <div>
+                <h2 class="fw-bold m-0">{{stat.value}}</h2>
+                <p class="text-muted small m-0">{{stat.label}}</p>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+  </div>
+
+  <!-- MAIN DASHBOARD GRID -->
+  <div class="row g-4" *ngIf="!isLoading">
+
+    <!-- LEFT COLUMN: My Learning (Occupies more space) -->
+    <div class="col-lg-8">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="fw-bold m-0">Continue Learning</h3>
+        <button mat-button color="primary" routerLink="/student/enroller-cources" *ngIf="myEnrollments.length > 0">
+          View All
+        </button>
+      </div>
+
+      <!-- User has enrollments -->
+      <div class="row g-3" *ngIf="myEnrollments.length > 0">
+        <div class="col-12" *ngFor="let enroll of myEnrollments | slice:0:3">
+          
+          <mat-card class="course-card h-100 shadow-sm border-0 p-3">
+            <div class="d-flex align-items-center">
+              <!-- Thumbnail -->
+              <img [src]="enroll.courseThumbnail || 'assets/placeholder.jpg'" class="rounded me-3 d-none d-sm-block" style="width: 100px; height: 70px; object-fit: cover;">
+              
+              <!-- Content -->
+              <div class="flex-grow-1">
+                <h5 class="fw-bold mb-1 fs-6">{{enroll.courseTitle}}</h5>
+                <div class="d-flex align-items-center justify-content-between small text-muted mb-1">
+                  <span>{{enroll.progressPercent}}% Complete</span>
+                </div>
+                <mat-progress-bar mode="determinate" [value]="enroll.progressPercent" [class.accent-progress]="enroll.progressPercent === 100" class="rounded"></mat-progress-bar>
+              </div>
+
+              <!-- Button -->
+              <div class="ms-3">
+                <button mat-icon-button color="primary" [routerLink]="['/student/course-view', enroll.courseId]">
+                  <mat-icon>play_circle_filled</mat-icon>
+                </button>
+              </div>
+            </div>
+          </mat-card>
+
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div class="card border-0 bg-light p-5 text-center" *ngIf="myEnrollments.length === 0">
+        <div class="mb-3">
+          <mat-icon class="display-3 text-muted" style="width: 60px; height: 60px; font-size: 60px;">school</mat-icon>
+        </div>
+        <h3>Start your learning journey</h3>
+        <p class="text-muted">You are not enrolled in any courses yet.</p>
+        <div>
+          <button mat-raised-button color="primary" routerLink="/courses">Browse Catalog</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN: Recent Transactions (New Widget) -->
+    <div class="col-lg-4">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="fw-bold m-0">Recent Activity</h3>
+        <button mat-button color="accent" routerLink="/student/billing-history">History</button>
+      </div>
+
+      <mat-card class="border-0 shadow-sm">
+        <mat-list>
+          <div *ngFor="let item of recentTransactions; let last = last">
+            <mat-list-item class="h-auto py-2">
+              <mat-icon matListItemIcon class="text-success bg-success-subtle p-2 rounded-circle" style="height: 40px; width: 40px; font-size: 20px; display: flex; align-items: center; justify-content: center;">receipt</mat-icon>
+              <div matListItemTitle class="fw-bold fs-6 mb-1">{{item.courseTitle}}</div>
+              <div matListItemLine class="text-muted small">{{item.date | date:'mediumDate'}}</div>
+              <div matListItemMeta class="fw-bold text-dark">{{item.amount | currency}}</div>
+            </mat-list-item>
+            <mat-divider *ngIf="!last"></mat-divider>
+          </div>
+
+          <!-- Empty Transactions -->
+          <div *ngIf="recentTransactions.length === 0" class="p-4 text-center text-muted small">
+            No recent transactions found.
+          </div>
+        </mat-list>
+      </mat-card>
+    </div>
+
+  </div>
+</div>

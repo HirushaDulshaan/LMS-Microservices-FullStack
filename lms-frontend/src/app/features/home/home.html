@@ -1,0 +1,105 @@
+<header class="hero-section d-flex align-items-center">
+  <div class="container">
+    <div class="row align-items-center text-start">
+      <div class="col-lg-6 hero-text-box">
+        <span class="badge bg-primary-soft text-primary mb-3 px-3 py-2 rounded-pill fw-bold">🚀 Start Learning Today</span>
+        <h1 class="display-3 fw-bolder mb-3 text-dark">Master New Skills <br><span class="text-gradient">With Experts</span></h1>
+        <p class="lead mb-4 text-secondary">
+          Unlock your potential with expert-led courses. Learn at your own pace, anytime, anywhere with world-class instructors.
+        </p>
+        <div class="d-flex gap-3">
+          <button mat-flat-button class="btn-premium px-5 py-4 rounded-pill" routerLink="/courses">
+            Explore Courses
+            <mat-icon class="ms-2">arrow_forward</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="col-lg-6 d-none d-lg-block">
+        <img src="https://img.freepik.com/free-vector/learning-concept-illustration_114360-1103.jpg"
+             class="img-fluid floating-anim"
+             alt="Hero Illustration"
+             style="max-height: 400px;">
+            </div>
+    </div>
+  </div>
+</header>
+
+<section class="py-5 bg-white border-bottom">
+  <div class="container">
+    <div class="row g-4 justify-content-center">
+      <div class="col-6 col-md-3" *ngFor="let stat of stats">
+        <div class="stat-item text-center">
+          <h2 class="fw-bolder mb-0 text-dark">{{stat.value}}</h2>
+          <p class="text-muted small fw-bold text-uppercase tracking-wider">{{stat.label}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5 bg-light-gradient">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-end mb-5">
+      <div>
+        <h2 class="fw-bold mb-0 section-title">Latest Courses</h2> <p class="text-muted">Explore our newest learning opportunities</p>
+      </div>
+      <button mat-button class="view-all-btn" routerLink="/courses">
+        View All
+        <mat-icon class="ms-1">arrow_forward</mat-icon>
+      </button>
+    </div>
+
+    <div *ngIf="isLoading" class="text-center py-5">
+      <mat-spinner diameter="40" class="mx-auto"></mat-spinner>
+    </div>
+
+    <div class="row g-4" *ngIf="!isLoading">
+      <div class="col-md-4" *ngFor="let course of latestCourses"> <div class="premium-card" (click)="handleEnroll(course.id)">
+        <div class="card-img-container">
+          <img [src]="course.thumbnailUrl || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=2072&auto=format&fit=crop'"
+               class="img-fluid" alt="Course">
+          <div class="card-badge">LKR {{course.price}}</div>
+        </div>
+        <div class="card-body-content p-4">
+          <span class="text-primary small fw-bold text-uppercase">{{course.subject?.name || 'Education'}}</span>
+          <h3 class="fw-bold my-2 course-title">{{course.title}}</h3>
+          <div class="d-flex align-items-center mt-3 pt-3 border-top">
+            <div class="avatar-circle me-2">{{(course.instructorName || 'I').charAt(0)}}</div>
+            <span class="text-muted small">By <span class="fw-bold text-dark">{{course.instructorName || 'Expert Instructor'}}</span></span>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="py-5 bg-white">
+  <div class="container">
+    <div class="mb-5">
+      <h2 class="fw-bold mb-0 section-title">Popular Courses <span class="badge bg-danger ms-2 fs-6">Hot 🔥</span></h2>
+      <p class="text-muted">Our most joined courses by thousands of students</p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-4" *ngFor="let course of popularCourses">
+        <div class="premium-card popular-highlight" (click)="handleEnroll(course.id)">
+          <div class="card-img-container">
+            <img [src]="course.thumbnailUrl || 'assets/placeholder.jpg'" class="img-fluid" alt="Course">
+            <div class="card-badge price-tag">LKR {{course.price}}</div>
+            <div class="trending-tag"><mat-icon>trending_up</mat-icon> Trending</div>
+          </div>
+
+          <div class="card-body-content p-4">
+            <h3 class="fw-bold my-2 course-title">{{course.title}}</h3>
+            <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+<!--              <span class="text-muted small"><mat-icon inline>group</mat-icon> {{course.sellingCount || 0}} Students</span>-->
+              <div class="rating-stars text-warning">
+                <mat-icon>star</mat-icon> 4.9
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

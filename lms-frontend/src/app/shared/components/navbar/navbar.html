@@ -1,0 +1,69 @@
+<mat-toolbar color="primary" class="navbar mat-elevation-z4 sticky-top">
+
+  <div class="d-flex align-items-center logo-container" routerLink="/">
+    <mat-icon class="me-2 text-white">school</mat-icon>
+    <span class="fw-bold fs-5 brand-text text-white">E-Learning</span>
+  </div>
+
+  <span class="spacer"></span>
+
+  <div class="d-none d-md-flex align-items-center">
+    <button mat-button routerLink="/courses" routerLinkActive="active-link" class="nav-btn">
+      <mat-icon class="me-1">explore</mat-icon> Browse Courses
+    </button>
+  </div>
+
+  <span class="spacer"></span>
+
+  <div class="d-none d-md-flex align-items-center gap-2">
+
+    <ng-container *ngIf="!isLoggedIn; else userActions">
+      <button mat-button routerLink="/login">Login</button>
+      <button mat-raised-button color="accent" routerLink="/register">Sign Up</button>
+    </ng-container>
+
+    <ng-template #userActions>
+      <button mat-icon-button routerLink="/cart" matTooltip="My Cart">
+        <mat-icon [matBadge]="cartItemCount" matBadgeColor="warn" [matBadgeHidden]="cartItemCount === 0">shopping_cart</mat-icon>
+      </button>
+
+      <button mat-icon-button
+              routerLink="/student/dashboard"
+              matTooltip="Go to Dashboard"
+              class="profile-avatar-btn">
+        <div class="avatar-circle">
+          {{ userName?.charAt(0)?.toUpperCase() }}
+        </div>
+      </button>
+
+      <button mat-icon-button (click)="logout()" matTooltip="Logout" color="warn">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </ng-template>
+  </div>
+
+  <div class="d-md-none">
+    <button mat-icon-button [matMenuTriggerFor]="mobileMenu">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
+
+</mat-toolbar>
+
+<mat-menu #mobileMenu="matMenu">
+  <button mat-menu-item routerLink="/"> <mat-icon>home</mat-icon> Home </button>
+  <button mat-menu-item routerLink="/courses"> <mat-icon>explore</mat-icon> Browse </button>
+
+  <mat-divider></mat-divider>
+
+  <div *ngIf="isLoggedIn">
+    <button mat-menu-item routerLink="/student/dashboard"> <mat-icon>dashboard</mat-icon> My Dashboard </button>
+    <button mat-menu-item routerLink="/cart"> <mat-icon>shopping_cart</mat-icon> Cart </button>
+    <button mat-menu-item (click)="logout()" class="text-danger"> <mat-icon color="warn">logout</mat-icon> Logout </button>
+  </div>
+
+  <div *ngIf="!isLoggedIn">
+    <button mat-menu-item routerLink="/login"> <mat-icon>login</mat-icon> Login </button>
+    <button mat-menu-item routerLink="/register"> <mat-icon>person_add</mat-icon> Sign Up </button>
+  </div>
+</mat-menu>

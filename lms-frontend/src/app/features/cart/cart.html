@@ -1,0 +1,110 @@
+<div class="cart-page-wrapper py-5">
+  <div class="container">
+
+    <div class="d-flex justify-content-between align-items-end mb-4">
+      <div>
+        <h1 class="fw-black m-0">Shopping Cart</h1>
+        <p class="text-secondary m-0" *ngIf="cartItems$ | async as items">
+          You have <span class="fw-bold text-primary">{{items.length}} items</span> in your selection
+        </p>
+      </div>
+      <button mat-button color="warn" class="rounded-pill" (click)="clearCart()" *ngIf="(cartItems$ | async)?.length">
+        <mat-icon>delete_sweep</mat-icon> Clear All
+      </button>
+    </div>
+
+    <ng-container *ngIf="cartItems$ | async as items">
+      <div class="row g-4" *ngIf="items.length > 0; else emptyCart">
+
+        <div class="col-lg-8">
+          <div class="cart-items-list">
+            <div class="premium-cart-card mb-3" *ngFor="let item of items">
+              <div class="card-content d-flex align-items-center">
+
+                <div class="img-wrapper">
+                  <img [src]="item.thumbnailUrl || 'assets/placeholder.jpg'" alt="Course">
+                  <div class="img-overlay"></div>
+                </div>
+
+                <div class="details-section ps-4 flex-grow-1">
+                  <h3 class="course-title">{{item.title}}</h3>
+                  <div class="instructor-tag">By <span>{{item.instructorName}}</span></div>
+
+                  <div class="rating-badge mt-2">
+                    <mat-icon>star</mat-icon> 4.8 <span>(Latest Update)</span>
+                  </div>
+                </div>
+
+                <div class="price-action-section text-end ms-3">
+                  <div class="current-price">LKR {{item.price | number}}</div>
+                  <button mat-icon-button color="warn" class="remove-btn" (click)="removeItem(item.id)" matTooltip="Remove Item">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="summary-glass-card sticky-top" style="top: 100px;">
+            <h3 class="summary-title">Order Summary</h3>
+
+            <div class="summary-row mt-4">
+              <span>Original Price</span>
+              <span class="text-decoration-line-through">LKR {{ (cartTotal$ | async)! + 2500 | number }}</span>
+            </div>
+
+            <div class="summary-row">
+              <span>Discount</span>
+              <span class="text-success">- LKR 2,500</span>
+            </div>
+
+            <mat-divider class="my-3"></mat-divider>
+
+            <div class="total-row">
+              <span class="total-label">Total:</span>
+              <div class="total-price-group text-end">
+                <div class="final-price">LKR {{ cartTotal$ | async | number }}</div>
+                <small class="text-muted">VAT included where applicable</small>
+              </div>
+            </div>
+
+            <button mat-flat-button color="primary" class="checkout-btn w-100 mt-4 py-4" (click)="checkout()">
+              Proceed to Checkout
+              <mat-icon>arrow_forward</mat-icon>
+            </button>
+
+            <div class="coupon-section mt-4">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Promo Code">
+                <button class="btn btn-dark" type="button">Apply</button>
+              </div>
+            </div>
+
+            <div class="secure-checkout mt-3 text-center text-muted">
+              <mat-icon class="fs-6 me-1">lock</mat-icon>
+              <span class="small">Secure Payment by Stripe</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </ng-container>
+
+    <ng-template #emptyCart>
+      <div class="empty-state-card text-center py-5 shadow-sm">
+        <div class="icon-blob mb-4">
+          <mat-icon>shopping_bag</mat-icon>
+        </div>
+        <h2 class="fw-black">Your cart is empty!</h2>
+        <p class="text-secondary mb-4">Explore our top-rated courses and start your learning journey today.</p>
+        <button mat-flat-button color="primary" routerLink="/courses" class="px-5 py-3 rounded-pill">
+          Browse Courses
+        </button>
+      </div>
+    </ng-template>
+
+  </div>
+</div>

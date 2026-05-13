@@ -1,0 +1,41 @@
+.sidebar-card {
+  overflow: hidden;
+  padding: 0 !important;
+  min-height: 85vh;
+}
+
+.avatar-circle {
+  width: 60px;
+  height: 60px;
+  background-color: #e3f2fd;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .icon-lg {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+  }
+}
+
+// Active link style
+.active-link {
+  background-color: #f0f7ff; // Very light blue
+  border-left: 4px solid #1976d2; // Primary Blue
+  font-weight: 500;
+  color: #1976d2;
+
+  mat-icon {
+    color: #1976d2;
+  }
+}
+
+mat-nav-list a {
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  &:hover {
+    background-color: #fafafa;
+  }
+}

@@ -1,0 +1,36 @@
+.navbar {
+  background-color: #000000 !important;
+  color: white !important;
+  height: 64px; // Mobile එකට ගැලපෙන උසක්
+  padding: 0 16px;
+
+  @media (min-width: 768px) {
+    height: 72px;
+    padding: 0 5%;
+  }
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.avatar-circle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff4081, #f50057);
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+// Logo text responsive
+.brand-text {
+  @media (max-width: 400px) {
+    display: none;
+  }
+}

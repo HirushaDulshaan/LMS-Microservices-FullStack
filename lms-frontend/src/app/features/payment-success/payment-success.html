@@ -1,0 +1,52 @@
+<div class="container py-5 min-vh-100 d-flex align-items-center justify-content-center">
+  <div class="row justify-content-center w-100">
+    <div class="col-md-8 col-lg-6 text-center">
+
+      <div class="mb-4 animate-bounce">
+        <div class="success-checkmark d-inline-flex align-items-center justify-content-center bg-success-subtle rounded-circle p-4">
+          <mat-icon style="font-size: 80px; width: 80px; height: 80px;" class="text-success">check_circle</mat-icon>
+        </div>
+      </div>
+
+      <h1 class="display-5 fw-bold mb-2">Payment Successful!</h1>
+      <p class="text-muted fs-5 mb-4">
+        Thank you for your purchase. Your enrollment is now active.
+      </p>
+
+      <mat-card class="border-0 shadow-sm mb-5 overflow-hidden">
+        <div class="bg-light p-3 border-bottom text-start">
+          <span class="text-uppercase fw-bold small text-muted">Order Details</span>
+        </div>
+        <mat-card-content class="p-4">
+          <div class="d-flex justify-content-between mb-3">
+            <span class="text-muted">Transaction ID:</span>
+            <span class="fw-medium text-dark">#{{sessionId ? sessionId.substring(0, 15) + '...' : 'Pending'}}</span>
+          </div>
+          <div class="d-flex justify-content-between mb-3">
+            <span class="text-muted">Payment Status:</span>
+            <span class="badge bg-success-subtle text-success px-3 py-2">SUCCESS</span>
+          </div>
+          <mat-divider class="my-3"></mat-divider>
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="h5 m-0 fw-bold">Amount Paid:</span>
+            <span class="h4 m-0 fw-bold text-primary">LKR {{totalAmount | number}}</span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+        <button mat-raised-button color="primary" class="px-5 py-3 fs-6 rounded-pill" routerLink="/student/dashboard">
+          <mat-icon class="me-2">dashboard</mat-icon> Go to My Dashboard
+        </button>
+        <button mat-stroked-button class="px-5 py-3 fs-6 rounded-pill" routerLink="/courses">
+          <mat-icon class="me-2">search</mat-icon> Browse More
+        </button>
+      </div>
+
+      <p class="mt-5 text-muted small">
+        Having trouble? <a href="#" class="text-primary text-decoration-none">Contact Support</a>
+      </p>
+
+    </div>
+  </div>
+</div>

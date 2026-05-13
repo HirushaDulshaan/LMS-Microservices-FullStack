@@ -1,0 +1,111 @@
+<div class="container-fluid p-4 min-vh-100" style="background: #f1f5f9;">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="fw-bold m-0 text-dark">User Management</h1>
+      <p class="text-muted m-0">Review and manage system users and requests</p>
+    </div>
+
+    <mat-form-field appearance="outline" class="search-field shadow-sm">
+      <mat-label>Search Users</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Search by name, email...">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <mat-tab-group animationDuration="200ms" class="premium-tabs shadow-sm bg-white rounded-3">
+
+    <mat-tab label="All Registered Users">
+      <mat-card class="mt-0 border-0 shadow-none">
+        <mat-card-content class="p-0">
+          <table mat-table [dataSource]="usersDataSource" class="w-100 premium-table">
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef> ID </th>
+              <td mat-cell *matCellDef="let user"> <span class="text-muted">#{{user.id}}</span> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> Full Name </th>
+              <td mat-cell *matCellDef="let user">
+                <div class="d-flex align-items-center py-2">
+                  <div class="user-avatar-small me-3">{{user.firstName[0]}}</div>
+                  <span class="fw-bold">{{user.firstName}} {{user.lastName}}</span>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef> Email </th>
+              <td mat-cell *matCellDef="let user"> {{user.email}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="role">
+              <th mat-header-cell *matHeaderCellDef> Role </th>
+              <td mat-cell *matCellDef="let user">
+                <span class="role-badge" [ngClass]="user.role.toLowerCase()">
+                  {{user.role}}
+                </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef class="text-center"> Actions </th>
+              <td mat-cell *matCellDef="let user" class="text-center">
+                <button mat-icon-button color="warn" (click)="deleteUser(user, $event)" [disabled]="user.role === 'ADMIN'">
+                  <mat-icon>delete_outline</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="userColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: userColumns;" (click)="openUserDetails(row)" class="clickable-row"></tr>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span [matBadge]="instructorRequests.length" matBadgeOverlap="false" [matBadgeHidden]="instructorRequests.length === 0">Instructor Requests</span>
+      </ng-template>
+
+      <div class="p-3">
+        <table mat-table [dataSource]="instructorRequests" class="w-100 premium-table border rounded">
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Applicant </th>
+            <td mat-cell *matCellDef="let user"> {{user.firstName}} {{user.lastName}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef> Email </th>
+            <td mat-cell *matCellDef="let user"> {{user.email}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef class="text-end pe-4"> Action </th>
+            <td mat-cell *matCellDef="let user" class="text-end pe-4">
+              <button mat-flat-button color="primary" class="rounded-pill" (click)="approveAsInstructor(user)">
+                Approve as Instructor
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="['name', 'email', 'action']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['name', 'email', 'action'];"></tr>
+        </table>
+
+        <div *ngIf="instructorRequests.length === 0" class="p-5 text-center text-muted">
+          <mat-icon style="font-size: 48px; height: 48px; width: 48px;">assignment_ind</mat-icon>
+          <p>No pending instructor applications.</p>
+        </div>
+      </div>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span [matBadge]="requests.length" matBadgeOverlap="false" [matBadgeHidden]="requests.length === 0">Email Requests</span>
+      </ng-template>
+      <div class="p-5 text-center text-muted">Email update requests will appear here.</div>
+    </mat-tab>
+
+  </mat-tab-group>
+</div>

@@ -1,0 +1,77 @@
+<div class="container py-5">
+
+  <div class="d-flex justify-content-between align-items-center mb-5">
+    <div>
+      <h1 class="fw-bold mb-0 text-dark">My Learning</h1>
+      <p class="text-muted">You are enrolled in {{enrolledCourses?.length || 0}} courses</p>
+    </div>
+    <button mat-stroked-button color="primary" class="rounded-pill">View Archive</button>
+  </div>
+
+  <div *ngIf="isLoading" class="text-center py-5">
+    <mat-spinner diameter="50" class="mx-auto"></mat-spinner>
+    <p class="mt-3 text-muted">Loading your courses...</p>
+  </div>
+
+  <div class="row g-4" *ngIf="!isLoading && enrolledCourses.length > 0">
+    <div class="col-md-6 col-lg-4" *ngFor="let course of enrolledCourses">
+
+      <mat-card class="course-card h-100 shadow-sm border-0 overflow-hidden">
+        <div class="position-relative overflow-hidden">
+          <img mat-card-image [src]="course.courseThumbnail || 'assets/placeholder.jpg'"
+               alt="Course" class="course-img w-100">
+
+          <span class="badge position-absolute top-0 end-0 m-3 px-3 py-2 rounded-pill shadow-sm"
+                [class.bg-success]="course.status === 'SUCCESS'"
+                [class.bg-warning]="course.status !== 'SUCCESS'">
+            <mat-icon style="font-size: 14px; height: 14px; width: 14px; vertical-align: middle;">check_circle</mat-icon>
+            {{ course.status === 'SUCCESS' ? ' Enrolled' : ' Pending' }}
+          </span>
+        </div>
+
+        <mat-card-content class="p-4">
+          <h2 class="h5 fw-bold mb-2 text-dark text-truncate-2" title="{{course.courseTitle}}">
+            {{course.courseTitle}}
+          </h2>
+
+          <p class="text-primary small fw-bold mb-1">
+            <mat-icon style="font-size: 14px; height: 14px; width: 14px;">person</mat-icon>
+            {{course.instructorName}}
+          </p>
+
+          <div class="mb-3 mt-4">
+            <div class="d-flex justify-content-between align-items-center small mb-2">
+              <span class="fw-bold">{{course.progressPercent || 0}}% Complete</span>
+              <span class="text-muted italic">{{course.progressPercent >= 100 ? 'Finished' : 'Learning'}}</span>
+            </div>
+
+            <mat-progress-bar
+              mode="determinate"
+              [value]="course.progressPercent || 0"
+              [color]="getProgressColor(course.progressPercent || 0)"
+              style="height: 8px;"
+              class="rounded-pill">
+            </mat-progress-bar>
+          </div>
+        </mat-card-content>
+
+        <mat-card-actions class="p-4 pt-0">
+          <button mat-flat-button color="primary" class="w-100 py-2 rounded-3 fw-bold"
+                  [routerLink]="['/student/course-view', course.courseId]">
+            <mat-icon>play_circle_outline</mat-icon>
+            START LEARNING
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && enrolledCourses.length === 0" class="text-center py-5 bg-light rounded-4 border border-dashed">
+    <mat-icon class="text-muted mb-3" style="font-size: 100px; width: 100px; height: 100px;">import_contacts</mat-icon>
+    <h3 class="fw-bold">No courses found</h3>
+    <p class="text-muted mb-4">You haven't started any learning journey yet.</p>
+    <button mat-raised-button color="accent" routerLink="/courses" class="px-5 py-2 rounded-pill">
+      Browse Courses
+    </button>
+  </div>
+</div>

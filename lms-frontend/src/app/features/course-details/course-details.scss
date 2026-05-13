@@ -1,0 +1,28 @@
+.icon-sm {
+  font-size: 18px;
+  height: 18px;
+  width: 18px;
+}
+.icon-xs {
+  font-size: 16px;
+  height: 16px;
+  width: 16px;
+}
+.icon-large {
+  font-size: 48px;
+  height: 48px;
+  width: 48px;
+}
+
+.sidebar-card-wrapper {
+  position: sticky;
+  top: 100px;
+  z-index: 10;
+}
+
+@media (max-width: 991px) {
+  .sidebar-card-wrapper {
+    position: static;
+    margin-top: 2rem;
+  }
+}

@@ -1,0 +1,77 @@
+<div class="container-fluid p-0 min-vh-100 bg-light">
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center vh-100">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="d-flex flex-column justify-content-center align-items-center vh-100">
+    <mat-icon color="warn" class="fs-1 icon-large mb-3">error</mat-icon>
+    <h3>{{error}}</h3>
+    <button mat-stroked-button color="primary" routerLink="/courses">Back to Courses</button>
+  </div>
+
+  <!-- Content -->
+  <div *ngIf="!isLoading && course">
+    <!-- Hero Header -->
+    <div class="bg-dark text-white py-5">
+      <div class="container">
+        <h1 class="display-4 fw-bold mb-3">{{course.title}}</h1>
+        <p class="lead mb-4">{{course.description?.substring(0, 150)}}...</p>
+      </div>
+    </div>
+
+    <div class="container mt-5">
+      <div class="row">
+        <!-- Left Column -->
+        <div class="col-lg-8">
+          <!-- Lessons -->
+          <div class="mb-5">
+            <h3 class="fw-bold mb-3">Course Content</h3>
+            <mat-list class="border rounded bg-white">
+              <ng-container *ngFor="let lesson of lessons; let i = index; let last = last">
+                <mat-list-item>
+                  <mat-icon matListItemIcon class="text-primary">play_circle</mat-icon>
+                  <div matListItemTitle class="fw-bold">{{lesson.title}}</div>
+                  <div matListItemLine class="text-muted small">
+                    Lesson {{i + 1}} <span *ngIf="lesson.duration">• {{lesson.duration}}</span>
+                  </div>
+                </mat-list-item>
+                <mat-divider *ngIf="!last"></mat-divider>
+              </ng-container>
+              <div *ngIf="lessons.length === 0" class="p-4 text-center text-muted">
+                <mat-icon class="fs-1 mb-2">sentiment_dissatisfied</mat-icon>
+                <p class="m-0">No lessons available for this course yet.</p>
+              </div>
+            </mat-list>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-lg-4">
+          <mat-card-content class="p-4 bg-white rounded shadow-sm">
+            <h1 class="fw-bold m-0 mb-3" *ngIf="!isEnrolled">LKR {{course.price}}</h1>
+
+            <div *ngIf="!isEnrolled">
+              <button mat-raised-button color="primary" class="w-100 mb-2 py-4 fs-5" (click)="addToCart()">
+                <mat-icon class="me-2">shopping_cart</mat-icon>
+                Add to Cart
+              </button>
+
+              <p class="text-muted small text-center mt-2">
+                30-Day Money-Back Guarantee
+              </p>
+            </div>
+
+            <div *ngIf="isEnrolled">
+              <button mat-raised-button color="accent" class="w-100 mb-2 py-4 fs-5"
+                      [routerLink]="['/student/course-view', course?.id]">
+                Go to Course
+              </button>
+            </div>
+          </mat-card-content>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

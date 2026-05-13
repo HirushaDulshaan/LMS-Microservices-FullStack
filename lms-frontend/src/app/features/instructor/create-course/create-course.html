@@ -1,0 +1,108 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+
+      <mat-card class="shadow p-4">
+        <div class="d-flex align-items-center mb-4">
+          <button mat-icon-button routerLink="/instructor/dashboard" class="me-2">
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+          <h2 class="fw-bold m-0">Create New Course</h2>
+        </div>
+
+        <form [formGroup]="courseForm" (ngSubmit)="onSubmit()">
+
+          <!-- Title -->
+          <mat-form-field appearance="outline" class="w-100 mb-3">
+            <mat-label>Course Title</mat-label>
+            <input matInput formControlName="title" placeholder="e.g. Master Angular 17">
+            <mat-error *ngIf="courseForm.get('title')?.hasError('required')">
+              Title is required
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Category & Level (Row) -->
+          <div class="row">
+            <div class="col-md-6">
+              <!-- 👇 UPDATED: Category Dropdown -->
+              <mat-form-field appearance="outline" class="w-100 mb-3">
+                <mat-label>Category</mat-label>
+                <mat-select formControlName="category">
+                  <mat-option *ngFor="let cat of categories" [value]="cat.value">
+                    {{cat.label}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="courseForm.get('category')?.hasError('required')">
+                  Category is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-6">
+              <mat-form-field appearance="outline" class="w-100 mb-3">
+                <mat-label>Level</mat-label>
+                <mat-select formControlName="level">
+                  <mat-option *ngFor="let level of levels" [value]="level">
+                    {{level}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <mat-form-field appearance="outline" class="w-100 mb-3">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description" rows="4"
+              placeholder="What will students learn?"></textarea>
+            <mat-error *ngIf="courseForm.get('description')?.hasError('minlength')">
+              Description must be at least 20 characters.
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Price & Thumbnail (Row) -->
+          <div class="row">
+            <div class="col-md-6">
+              <mat-form-field appearance="outline" class="w-100 mb-3">
+                <mat-label>Price (LKR)</mat-label>
+                <input matInput type="number" formControlName="price" min="0">
+                <mat-icon matPrefix>attach_money</mat-icon>
+              </mat-form-field>
+            </div>
+            <div class="col-md-6">
+              <mat-form-field appearance="outline" class="w-100 mb-3">
+                <mat-label>Thumbnail Image URL</mat-label>
+                <input matInput formControlName="thumbnailUrl" placeholder="Paste Google Drive or Image URL"
+                  (input)="onImageUrlChange()">
+
+                <mat-error *ngIf="courseForm.get('thumbnailUrl')?.hasError('required')">
+                  Thumbnail URL is required
+                </mat-error>
+              </mat-form-field>
+
+              <div *ngIf="currentThumbnail" class="mt-2">
+                <small class="text-muted">Preview:</small>
+
+                <img [src]="currentThumbnail" alt="Thumbnail" class="img-thumbnail mt-2"
+                  style="height: 150px; object-fit: cover;" (error)="currentThumbnail = null">
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Submit Button -->
+          <div class="d-flex justify-content-end mt-3">
+            <button type="button" mat-stroked-button color="warn" class="me-2" routerLink="/instructor/dashboard">
+              Cancel
+            </button>
+            <button type="submit" mat-raised-button color="primary" class="px-4" [disabled]="courseForm.invalid">
+              Create Course
+            </button>
+          </div>
+
+        </form>
+      </mat-card>
+
+    </div>
+  </div>
+</div>

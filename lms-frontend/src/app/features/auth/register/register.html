@@ -1,0 +1,65 @@
+<div class="register-wrapper d-flex justify-content-center align-items-center min-vh-100 py-5">
+  <div class="register-card shadow-lg p-4 p-md-5 border-0">
+
+    <div class="text-center mb-4">
+      <div class="logo-circle mb-3">
+        <i class="bi bi-person-plus-fill fs-1 text-primary"></i>
+      </div>
+      <h2 class="fw-bold text-dark">Create Account</h2>
+      <p class="text-muted">Join our learning community today</p>
+    </div>
+
+    <div *ngIf="errorMessage" class="alert alert-soft-danger d-flex align-items-center mb-4">
+      <i class="bi bi-exclamation-triangle-fill me-2"></i>
+      <div>{{ errorMessage }}</div>
+    </div>
+
+    <form (ngSubmit)="onRegister()" #regForm="ngForm">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <div class="form-floating">
+            <input type="text" name="firstName" [(ngModel)]="registerData.firstName"
+                   class="form-control custom-input" id="fName" placeholder="First Name" required>
+            <label for="fName">First Name</label>
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <div class="form-floating">
+            <input type="text" name="lastName" [(ngModel)]="registerData.lastName"
+                   class="form-control custom-input" id="lName" placeholder="Last Name" required>
+            <label for="lName">Last Name</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-floating mb-3">
+        <input type="email" name="email" [(ngModel)]="registerData.email"
+               class="form-control custom-input" id="emailInput" placeholder="name@example.com" required>
+        <label for="emailInput">Email Address</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        <input type="text" name="mobileNumber" [(ngModel)]="registerData.mobileNumber"
+               class="form-control custom-input" id="mobileInput" placeholder="07XXXXXXXX" required>
+        <label for="mobileInput">Mobile Number</label>
+      </div>
+
+      <div class="form-floating mb-4">
+        <input type="password" name="password" [(ngModel)]="registerData.password"
+               class="form-control custom-input" id="passInput" placeholder="Password" required>
+        <label for="passInput">Password</label>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 py-3 fw-bold reg-btn" [disabled]="!regForm.valid">
+        CREATE ACCOUNT
+      </button>
+    </form>
+
+    <div class="text-center mt-4">
+      <p class="text-muted small">
+        Already have an account?
+        <a routerLink="/login" class="text-primary fw-bold text-decoration-none ms-1">Login here</a>
+      </p>
+    </div>
+  </div>
+</div>

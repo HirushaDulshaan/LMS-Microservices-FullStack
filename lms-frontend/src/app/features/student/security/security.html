@@ -1,0 +1,102 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+
+      <mat-card class="shadow-sm p-4">
+
+        <!-- Header -->
+        <div class="text-center mb-4">
+          <div class="bg-light rounded-circle d-inline-flex p-3 mb-3">
+            <mat-icon class="text-primary icon-large">security</mat-icon>
+          </div>
+          <h2 class="fw-bold">Security Settings</h2>
+          <p class="text-muted">Manage your login and account security</p>
+        </div>
+
+        <!-- 1. Email Section -->
+        <div class="mb-4">
+          <h5 class="fw-bold mb-3">Account Email</h5>
+          <div class="d-flex align-items-center justify-content-between p-3 border rounded bg-light">
+            <div class="d-flex align-items-center">
+              <mat-icon class="text-muted me-2">email</mat-icon>
+
+              <div class="d-flex flex-column">
+                <span class="small text-muted">Current Address</span>
+                <span class="fw-bold">{{ currentEmail }}</span>
+              </div>
+            </div>
+
+            <!-- 👇 This button triggers the popup with the "Lost Access?" link inside -->
+            <button mat-stroked-button color="primary" (click)="changeEmail()">
+              Change Email
+            </button>
+          </div>
+
+          <div class="d-flex align-items-start mt-2">
+            <mat-icon class="icon-xs text-warning me-1 mt-1">warning</mat-icon>
+            <p class="text-muted small m-0">
+              Changing your email will log you out immediately. You will need to verify the new email via OTP sent to your current address.
+            </p>
+          </div>
+        </div>
+
+        <mat-divider class="mb-4"></mat-divider>
+
+        <!-- 2. Password Section -->
+        <h5 class="fw-bold mb-3">Change Password</h5>
+
+        <!-- STATE 1: Initial (Send OTP) -->
+        <div *ngIf="!otpSent" class="text-center bg-light p-4 rounded border">
+          <p class="mb-3">
+            To change your password, we need to verify it's you.
+            Click the button below to receive a One-Time Password (OTP).
+          </p>
+
+          <button mat-raised-button color="accent" class="px-4 py-2" (click)="sendOtp()" [disabled]="isLoading">
+            <mat-icon>send</mat-icon>
+            {{ isLoading ? 'Sending...' : 'Send OTP Code' }}
+          </button>
+        </div>
+
+        <!-- STATE 2: Enter OTP & New Password -->
+        <form *ngIf="otpSent" [formGroup]="securityForm" (ngSubmit)="onSubmit()">
+
+          <div class="alert alert-info d-flex align-items-center mb-4" role="alert">
+            <mat-icon class="me-2 text-info">info</mat-icon>
+            <div>OTP code has been sent to your email.</div>
+          </div>
+
+          <!-- OTP Input -->
+          <mat-form-field appearance="outline" class="w-100 mb-3">
+            <mat-label>Enter 6-Digit OTP</mat-label>
+            <input matInput formControlName="otp" placeholder="123456" maxlength="6">
+            <mat-icon matSuffix>lock</mat-icon>
+            <mat-error *ngIf="securityForm.get('otp')?.hasError('required')">OTP is required</mat-error>
+            <mat-error *ngIf="securityForm.get('otp')?.hasError('minlength')">Must be 6 digits</mat-error>
+          </mat-form-field>
+
+          <!-- New Password Input -->
+          <mat-form-field appearance="outline" class="w-100 mb-4">
+            <mat-label>New Password</mat-label>
+            <input matInput [type]="hidePassword() ? 'password' : 'text'" formControlName="newPassword">
+            <button mat-icon-button matSuffix (click)="clickEvent($event)" type="button">
+              <mat-icon>{{hidePassword() ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <mat-error *ngIf="securityForm.get('newPassword')?.hasError('required')">Password is required</mat-error>
+            <mat-error *ngIf="securityForm.get('newPassword')?.hasError('minlength')">Must be at least 6 chars</mat-error>
+          </mat-form-field>
+
+          <div class="d-grid gap-2">
+            <button mat-raised-button color="primary" type="submit" [disabled]="securityForm.invalid || isLoading" class="py-2 fs-6">
+              {{ isLoading ? 'Updating...' : 'Change Password' }}
+            </button>
+            <button type="button" mat-button color="warn" (click)="otpSent = false">Cancel</button>
+          </div>
+
+        </form>
+
+      </mat-card>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,86 @@
+<div class="container py-5">
+
+  <!-- Header & Search Section -->
+  <div class="row mb-5 align-items-center">
+    <div class="col-md-8">
+      <h1 class="fw-bold m-0">Explore Courses</h1>
+      <p class="text-muted">Discover new skills and advance your career</p>
+    </div>
+    <div class="col-md-4">
+      <!-- Search Input -->
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Search courses...</mat-label>
+        <input matInput placeholder="Ex. Angular, Python">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <!-- Loading Spinner (Shown while fetching data) -->
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="text-muted mt-2">Loading courses...</p>
+  </div>
+
+  <!-- Course Grid (Shown when data is ready) -->
+  <div class="row g-4" *ngIf="!isLoading">
+    <div class="col-md-6 col-lg-4" *ngFor="let course of courses">
+      <mat-card class="course-card h-100 shadow-sm border-0">
+
+        <!-- Course Thumbnail -->
+        <div class="position-relative">
+          <!-- Use placeholder if no image is provided -->
+          <img mat-card-image
+               [src]="course.thumbnailUrl || 'https://via.placeholder.com/300x200?text=No+Image'"
+               alt="{{course.title}}"
+               class="course-img">
+
+          <!-- Level Badge -->
+          <span class="badge bg-white text-dark shadow-sm position-absolute top-0 end-0 m-2">
+            {{course.level}}
+          </span>
+        </div>
+
+        <mat-card-content class="p-3">
+          <!-- Category & Rating Row -->
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <mat-chip-set>
+              <mat-chip class="small-chip" color="accent" selected>{{course.category}}</mat-chip>
+            </mat-chip-set>
+            <div class="d-flex align-items-center text-warning">
+              <mat-icon class="icon-small">star</mat-icon>
+              <span class="fw-bold ms-1">4.5</span>
+            </div>
+          </div>
+
+          <!-- Title & Instructor -->
+          <h3 class="card-title fw-bold text-truncate" [title]="course.title">{{course.title}}</h3>
+          <p class="text-muted small mb-3">By {{course.instructorName}}</p>
+
+          <!-- Description (Truncated) -->
+          <p class="text-muted small text-truncate">{{course.description}}</p>
+
+          <!-- Price & Action Row -->
+          <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+            <h4 class="text-primary fw-bold m-0">
+              {{ course.price === 0 ? 'Free' : (course.price | currency) }}
+            </h4>
+
+            <!-- Enroll Button (We will add click logic later) -->
+            <button mat-flat-button color="primary">Enroll Now</button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <!-- Empty State (Shown if no courses exist) -->
+  <div *ngIf="!isLoading && courses.length === 0" class="text-center py-5">
+    <mat-icon class="display-1 text-muted mb-3">search_off</mat-icon>
+    <h3>No courses found</h3>
+    <p class="text-muted">Check back later for new content!</p>
+  </div>
+
+</div>

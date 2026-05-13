@@ -1,0 +1,23 @@
+.icon-sm {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+mat-icon {
+  width: auto;
+  height: auto;
+}
+
+.mat-mdc-row:hover {
+  background-color: #f8f9fa;
+}
+
+// Chart Bar Hover
+.bg-primary {
+  transition: opacity 0.2s;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
+}
